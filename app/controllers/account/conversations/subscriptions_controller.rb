@@ -3,7 +3,7 @@ class Account::Conversations::SubscriptionsController < Account::ApplicationCont
 
   before_action do
     @remove_content_padding = true
-    @body_class = 'fixed-height'
+    @body_class = "fixed-height"
   end
 
   # GET /account/users/:user_id/conversations/subscriptions
@@ -30,7 +30,7 @@ class Account::Conversations::SubscriptionsController < Account::ApplicationCont
   def create
     respond_to do |format|
       if @subscription.save
-        format.html { redirect_to [:account, @user, :conversations_subscriptions], notice: I18n.t('conversations/subscriptions.notifications.created') }
+        format.html { redirect_to [:account, @user, :conversations_subscriptions], notice: I18n.t("conversations/subscriptions.notifications.created") }
         format.json { render :show, status: :created, location: [:account, @user, @subscription] }
       else
         format.html { render :new }
@@ -44,7 +44,7 @@ class Account::Conversations::SubscriptionsController < Account::ApplicationCont
   def update
     respond_to do |format|
       if @subscription.update(subscription_params)
-        format.html { redirect_to [:account, @subscription], notice: I18n.t('conversations/subscriptions.notifications.updated') }
+        format.html { redirect_to [:account, @subscription], notice: I18n.t("conversations/subscriptions.notifications.updated") }
         format.json { render :show, status: :ok, location: [:account, @subscription] }
       else
         format.html { render :edit }
@@ -58,7 +58,7 @@ class Account::Conversations::SubscriptionsController < Account::ApplicationCont
   def destroy
     @subscription.destroy
     respond_to do |format|
-      format.html { redirect_to [:account, @user, :conversations, :subscriptions], notice: I18n.t('conversations/subscriptions.notifications.destroyed') }
+      format.html { redirect_to [:account, @user, :conversations, :subscriptions], notice: I18n.t("conversations/subscriptions.notifications.destroyed") }
       format.json { head :no_content }
     end
   end
@@ -74,15 +74,15 @@ class Account::Conversations::SubscriptionsController < Account::ApplicationCont
   end
 
   private
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def subscription_params
-      strong_params = params.require(:conversations_subscription).permit(
-        # 🚅 super scaffolding will insert new fields above this line.
-        # 🚅 super scaffolding will insert new arrays above this line.
-      )
 
-      # 🚅 super scaffolding will insert processing for new fields above this line.
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def subscription_params
+    strong_params = params.require(:conversations_subscription).permit
+    # 🚅 super scaffolding will insert new fields above this line.
+    # 🚅 super scaffolding will insert new arrays above this line.
 
-      strong_params
-    end
+    # 🚅 super scaffolding will insert processing for new fields above this line.
+
+    strong_params
+  end
 end

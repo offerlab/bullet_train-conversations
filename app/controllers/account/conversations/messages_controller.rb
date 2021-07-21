@@ -29,7 +29,7 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
       @message.user = current_user
       @message.membership = current_membership
       if @message.save
-        format.html { redirect_to [:account, @conversation, :conversations_messages], notice: I18n.t('conversations/messages.notifications.created') }
+        format.html { redirect_to [:account, @conversation, :conversations_messages], notice: I18n.t("conversations/messages.notifications.created") }
         format.json { render :show, status: :created, location: [:account, @conversation, @message] }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
   def update
     respond_to do |format|
       if @message.update(message_params)
-        format.html { redirect_to [:account, @message], notice: I18n.t('conversations/messages.notifications.updated') }
+        format.html { redirect_to [:account, @message], notice: I18n.t("conversations/messages.notifications.updated") }
         format.json { render :show, status: :ok, location: [:account, @message] }
       else
         format.html { render :edit }
@@ -57,22 +57,23 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
   def destroy
     @message.destroy
     respond_to do |format|
-      format.html { redirect_to [:account, @conversation, :conversations, :messages], notice: I18n.t('conversations/messages.notifications.destroyed') }
+      format.html { redirect_to [:account, @conversation, :conversations, :messages], notice: I18n.t("conversations/messages.notifications.destroyed") }
       format.json { head :no_content }
     end
   end
 
   private
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def message_params
-      strong_params = params.require(:conversations_message).permit(
-        :body,
-        # 🚅 super scaffolding will insert new fields above this line.
-        # 🚅 super scaffolding will insert new arrays above this line.
-      )
 
-      # 🚅 super scaffolding will insert processing for new fields above this line.
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def message_params
+    strong_params = params.require(:conversations_message).permit(
+      :body,
+      # 🚅 super scaffolding will insert new fields above this line.
+      # 🚅 super scaffolding will insert new arrays above this line.
+    )
 
-      strong_params
-    end
+    # 🚅 super scaffolding will insert processing for new fields above this line.
+
+    strong_params
+  end
 end

@@ -4,6 +4,7 @@ class PopulateUuidOnConversationsSubscriptions < ActiveRecord::Migration[6.0]
       conversations_subscription.update_column(:uuid, SecureRandom.hex)
     end
   end
+
   def down
   end
 end

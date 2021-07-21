@@ -1,5 +1,4 @@
 class Conversations::Message < ApplicationRecord
-
   # 🚫 DEFAULT BULLET TRAIN CONVERSATION FUNCTIONALITY
   # Typically you should avoid adding your own functionality in this section to avoid merge conflicts in the future.
   # (If you specifically want to change Bullet Train's default behavior, that's OK and you can do that here.)
@@ -30,7 +29,6 @@ class Conversations::Message < ApplicationRecord
 
   delegate :team, to: :conversation
 
-
   # ✅ YOUR APPLICATION'S CONVERSATION FUNCTIONALITY
   # This is the place where you should implement your own features on top of Bullet Train's functionality. There
   # are a bunch of Super Scaffolding hooks here by default to try and help keep generated code logically organized.
@@ -55,7 +53,6 @@ class Conversations::Message < ApplicationRecord
 
   # 🚅 add methods above.
 
-
   # 🚫 DEFAULT BULLET TRAIN CONVERSATION FUNCTIONALITY
   # We put these at the bottom of this file to keep them out of the way. You should define your own methods above here.
 
@@ -64,7 +61,7 @@ class Conversations::Message < ApplicationRecord
   end
 
   def label_string
-    'this message'
+    "this message"
   end
 
   def broadcast
@@ -73,14 +70,14 @@ class Conversations::Message < ApplicationRecord
 
   def mentioned_memberships
     Nokogiri::HTML(body).css('a[href^="bullettrain://memberships/"]').map do |mention|
-      membership_id = mention['href'].split('/').last.to_i
+      membership_id = mention["href"].split("/").last.to_i
       conversation.team.memberships.find_by(id: membership_id)
     end.compact
   end
 
   def mentioned_teams
     Nokogiri::HTML(body).css('a[href^="bullettrain://teams/"]').map do |mention|
-      team_id = mention['href'].split('/').last.to_i
+      team_id = mention["href"].split("/").last.to_i
       conversation.team.id == team_id ? conversation.team : nil
     end.compact
   end
@@ -96,12 +93,12 @@ class Conversations::Message < ApplicationRecord
   def update_mention_labels
     html = Nokogiri::HTML.fragment(body)
     html.css('a[href^="bullettrain://memberships/"]').map do |mention|
-      membership_id = mention['href'].split('/').last.to_i
+      membership_id = mention["href"].split("/").last.to_i
       membership = Membership.find membership_id
       mention.children.first.content = membership.name
     end
     html.css('a[href^="bullettrain://teams/"]').map do |mention|
-      team_id = mention['href'].split('/').last.to_i
+      team_id = mention["href"].split("/").last.to_i
       team = Team.find team_id
       mention.children.first.content = team.name
     end

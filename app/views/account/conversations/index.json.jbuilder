@@ -1,1 +1,1 @@
-json.array! @conversations, partial: 'conversations/conversation', as: :conversation
+json.array! @conversations, partial: "conversations/conversation", as: :conversation

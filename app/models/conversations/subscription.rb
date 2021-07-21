@@ -1,5 +1,4 @@
 class Conversations::Subscription < ApplicationRecord
-
   # 🚫 DEFAULT BULLET TRAIN CONVERSATION FUNCTIONALITY
   # Typically you should avoid adding your own functionality in this section to avoid merge conflicts in the future.
   # (If you specifically want to change Bullet Train's default behavior, that's OK and you can do that here.)
@@ -12,13 +11,12 @@ class Conversations::Subscription < ApplicationRecord
 
   has_one :user, through: :membership
 
-  scope :latest, -> { joins(:conversation).select("conversations_subscriptions.*, conversations.last_message_at").order('conversations.last_message_at DESC') }
-  scope :unread, -> { latest.joins(:conversation).where('conversations.last_message_at IS NOT NULL AND (conversations_subscriptions.last_read_at IS NULL OR conversations_subscriptions.last_read_at < conversations.last_message_at)') }
-  scope :unread_since, lambda { |timestamp| unread.where('conversations.last_message_at > ?', timestamp) }
+  scope :latest, -> { joins(:conversation).select("conversations_subscriptions.*, conversations.last_message_at").order("conversations.last_message_at DESC") }
+  scope :unread, -> { latest.joins(:conversation).where("conversations.last_message_at IS NOT NULL AND (conversations_subscriptions.last_read_at IS NULL OR conversations_subscriptions.last_read_at < conversations.last_message_at)") }
+  scope :unread_since, lambda { |timestamp| unread.where("conversations.last_message_at > ?", timestamp) }
   scope :active, -> { joins(:messages).where.not(conversations_messages: {id: nil}) }
 
   delegate :team, to: :conversation
-
 
   # ✅ YOUR APPLICATION'S CONVERSATION FUNCTIONALITY
   # This is the place where you should implement your own features on top of Bullet Train's functionality. There
@@ -43,7 +41,6 @@ class Conversations::Subscription < ApplicationRecord
   # 🚅 add delegations above.
 
   # 🚅 add methods above.
-
 
   # 🚫 DEFAULT BULLET TRAIN CONVERSATION FUNCTIONALITY
   # We put these at the bottom of this file to keep them out of the way. You should define your own methods above here.
@@ -70,7 +67,7 @@ class Conversations::Subscription < ApplicationRecord
       save
       return true
     end
-    return false
+    false
   end
 
   def unread?
@@ -91,12 +88,12 @@ class Conversations::Subscription < ApplicationRecord
 
   def inbound_email_url
     return nil unless inbound_email_enabled?
-    "mailto:#{inbound_email_address}?subject=#{URI.escape("Re: #{subject}")}"
+    "mailto:#{inbound_email_address}?subject=#{CGI.escape("Re: #{subject}")}"
   end
 
   def inbound_email_address
     return nil unless inbound_email_enabled?
-    "conversations+#{uuid}+#{Time.zone.now.to_i}@#{ENV['INBOUND_EMAIL_DOMAIN']}"
+    "conversations+#{uuid}+#{Time.zone.now.to_i}@#{ENV["INBOUND_EMAIL_DOMAIN"]}"
   end
 
   def add_message(body)

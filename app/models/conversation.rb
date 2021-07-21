@@ -1,5 +1,4 @@
 class Conversation < ApplicationRecord
-
   # 🚫 DEFAULT BULLET TRAIN CONVERSATION FUNCTIONALITY
   # Typically you should avoid adding your own functionality in this section to avoid merge conflicts in the future.
   # (If you specifically want to change Bullet Train's default behavior, that's OK and you can do that here.)
@@ -9,22 +8,21 @@ class Conversation < ApplicationRecord
   belongs_to :team
 
   # resources with conversations by default.
-  belongs_to :kanban_card, class_name: 'Kanban::Card', optional: true
+  belongs_to :kanban_card, class_name: "Kanban::Card", optional: true
 
   # messages.
-  has_many :messages, class_name: 'Conversations::Message', dependent: :destroy
-  belongs_to :last_message, class_name: 'Conversations::Message', optional: true
+  has_many :messages, class_name: "Conversations::Message", dependent: :destroy
+  belongs_to :last_message, class_name: "Conversations::Message", optional: true
 
   # user subscriptions.
-  has_many :subscriptions, class_name: 'Conversations::Subscription', dependent: :destroy
-  has_many :active_subscriptions, class_name: 'Conversations::Subscription'
+  has_many :subscriptions, class_name: "Conversations::Subscription", dependent: :destroy
+  has_many :active_subscriptions, class_name: "Conversations::Subscription"
   has_many :memberships, through: :active_subscriptions
   has_many :users, through: :active_subscriptions
 
   before_destroy do
-    self.update(last_message: nil)
+    update(last_message: nil)
   end
-
 
   # ✅ YOUR APPLICATION'S CONVERSATION FUNCTIONALITY
   # This is the place where you should implement your own features on top of Bullet Train's conversation functionality.
@@ -55,7 +53,6 @@ class Conversation < ApplicationRecord
 
   # 🚅 add methods above.
 
-
   # 🚫 DEFAULT BULLET TRAIN CONVERSATION FUNCTIONALITY
   # We put these at the bottom of this file to keep them out of the way. You should define your own methods above here.
 
@@ -71,11 +68,9 @@ class Conversation < ApplicationRecord
 
   def create_subscriptions_for_memberships(memberships)
     memberships.each do |membership|
-      begin
-        subscriptions.find_or_create_by(membership: membership)
-      rescue ActiveRecord::RecordNotUnique
-        retry
-      end
+      subscriptions.find_or_create_by(membership: membership)
+    rescue ActiveRecord::RecordNotUnique
+      retry
     end
   end
 

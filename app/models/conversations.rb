@@ -1,5 +1,5 @@
 module Conversations
   def self.table_name_prefix
-    'conversations_'
+    "conversations_"
   end
 end
