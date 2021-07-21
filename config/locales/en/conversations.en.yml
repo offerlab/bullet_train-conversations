@@ -1,0 +1,68 @@
+en:
+  conversations: &conversations
+    label: &label Conversations
+    singular: Conversation
+    navigation:
+      label: *label
+      icon: fal fa-comments ti ti-comments
+    breadcrumbs:
+      label: *label
+    buttons: &buttons
+      new: Add New Conversation
+      create: Create Conversation
+      edit: Edit Conversation
+      update: Update Conversation
+      destroy: Remove Conversation
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{conversation_name}? This will also remove it's associated data. This can't be undone.
+    fields: &fields
+      last_message_at:
+        name: &last_message_at Last message at
+        label: *last_message_at
+        heading: *last_message_at
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        name: &created_at Added
+        label: *created_at
+        heading: *created_at
+    index:
+      section: "%{teams_possessive} Conversations"
+      header: Conversations
+      description: Below is a list of Conversations that have been added to %{team_name}. You can manage them with the options below.
+      description_empty: No Conversations have been added for %{team_name} yet. To get started, use the button below!
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{conversation_name}"
+      header: Conversation Details
+      description: Below are the details we have for %{conversation_name}. You'll also find options for updating these details or removing %{conversation_name} from %{team_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+    new:
+      section: "New Conversation for %{team_name}"
+      header: New Conversation Details
+      description: Please provide the details of the new Conversation you'd like to add to %{team_name}.
+      form: *form
+    edit:
+      section: "%{conversation_name}"
+      header: Edit Conversation Details
+      description: You can update the details or settings for %{conversation_name} below.
+      form: *form
+    notifications:
+      created: Conversation was successfully created.
+      updated: Conversation was successfully updated.
+      destroyed: Conversation was successfully destroyed.
+  account:
+    conversations: *conversations
+  activerecord:
+    attributes:
+      conversation:
+        last_message_at: *last_message_at
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at

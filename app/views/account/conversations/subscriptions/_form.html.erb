@@ -1,0 +1,16 @@
+<%= form_with(model: [:account, (@user unless subscription.persisted?), subscription], local: true) do |form| %>
+  <%= render 'shared/forms/errors', form: form %>
+
+  <%= render 'shared/fields/text_field', form: form, method: :subject, options: {autofocus: true} %>
+  <%# 🚅 super scaffolding will insert new fields above this line. %>
+
+  <div class="form-buttons-w">
+    <%= form.submit (form.object.persisted? ? t('.buttons.update') : t('.buttons.create')), class: "btn btn-primary" %>
+    <% if form.object.persisted? %>
+    <%= link_to t('global.buttons.cancel'), [:account, subscription], class: "btn btn-link" %>
+    <% else %>
+    <%= link_to t('global.buttons.cancel'), [:account, @user, :conversations, :subscriptions], class: "btn btn-link" %>
+    <% end %>
+  </div>
+
+<% end %>

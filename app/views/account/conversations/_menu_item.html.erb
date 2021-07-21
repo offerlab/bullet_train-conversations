@@ -1,0 +1,8 @@
+<%= render 'account/shared/menu/item', {
+  url: main_app.polymorphic_path([:account, current_team, :conversations]),
+  label: t('conversations.navigation.label'),
+} do |p| %>
+  <% p.content_for :icon do %>
+    <i class="<%= t('conversations.navigation.icon') %>"></i>
+  <% end %>
+<% end %>

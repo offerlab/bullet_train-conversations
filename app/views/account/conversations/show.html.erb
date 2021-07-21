@@ -1,0 +1,40 @@
+<div class="element-wrapper">
+  <% if false %>
+  <h6 class="element-header"><%= t('.section') %></h6>
+  <% end %>
+  <%= render 'shared/notices' %>
+
+  <div class="padded-lg">
+    <% if false %>
+    <div class="element-box element-box-show">
+      <h5 class="form-header"><%= t('.header') %></h5>
+      <div class="form-desc"><%= t('.description') %></div>
+
+      <div class="form-group">
+        <label class="col-form-label" for=""><%= t('conversations.fields.last_message_at.label') %></label>
+        <div>
+          <%= @conversation.last_message_at %>
+        </div>
+      </div>
+      <%# 🚅 super scaffolding will insert new fields above this line. %>
+
+      <div class="form-buttons-w">
+        <%= link_to t('.buttons.edit'), [:edit, :account, @conversation], class: "btn #{first_button_primary}" if can? :edit, @conversation %>
+        <%= link_to t('.buttons.destroy'), [:account, @conversation], method: :delete, class: "btn #{first_button_primary}", data: { confirm: t('.buttons.confirmations.destroy', model_locales(@conversation)) } if can? :destroy, @conversation %>
+        <%= link_to t('global.buttons.back'), [:account, @team, :conversations], class: "btn #{first_button_primary}" %>
+      </div>
+
+    </div>
+    <% end %>
+
+    <%= render 'account/conversations/messages/index', conversation: @conversation, messages: @conversation.messages.oldest %>
+    <%# 🚅 super scaffolding will insert new children above this line. %>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  scrollMax($('[data-model="Conversation"]'));
+});
+</script>

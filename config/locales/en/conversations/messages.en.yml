@@ -1,0 +1,74 @@
+en:
+  conversations/messages: &messages
+    label: &label Messages
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+    buttons: &buttons
+      new: Add New Message
+      create: Send Message
+      edit: Edit Message
+      update: Update Message
+      destroy: Remove Message
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{message_name}? This will also remove it's associated data. This can't be undone.
+    fields: &fields
+      author_name:
+        name: &author_name Author name
+        label: *author_name
+        heading: *author_name
+      body:
+        name: &body ""
+        label: *body
+        heading: *body
+        help: "To message someone, type <kbd>@</kbd> followed immediately by their name."
+        # help: "Use <kbd>control</kbd> <kbd>command</kbd> <kbd>space</kbd> for emojis and use <kbd>shift</kbd> <kbd>return</kbd> for carriage return."
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        name: &created_at Added
+        label: *created_at
+        heading: *created_at
+    index:
+      section: "%{conversations_possessive} Messages"
+      header: Messages
+      description: Below is a list of Messages that have been added to %{conversation_name}. You can manage them with the options below.
+      description_empty: No Messages have been added for %{conversation_name} yet. To get started, use the button below!
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{message_name}"
+      header: Message Details
+      description: Below are the details we have for %{message_name}. You'll also find options for updating these details or removing %{message_name} from %{conversation_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+    new:
+      section: "New Message for %{conversation_name}"
+      header: New Message Details
+      description: Please provide the details of the new Message you'd like to add to %{conversation_name}.
+      form: *form
+    edit:
+      section: "%{message_name}"
+      header: Edit Message Details
+      description: You can update the details or settings for %{message_name} below.
+      form: *form
+    notifications:
+      created: Message was successfully created.
+      updated: Message was successfully updated.
+      destroyed: Message was successfully destroyed.
+  account:
+    conversations:
+      messages: *messages
+  activerecord:
+    attributes:
+      conversations/message:
+        author_name: *author_name
+        body: *body
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at

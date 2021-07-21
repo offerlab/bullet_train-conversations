@@ -1,0 +1,33 @@
+<div class="element-wrapper">
+  <h6 class="element-header"><%= t('.section') %></h6>
+  <%= render 'shared/notices' %>
+  <div class="padded-lg">
+    <div class="element-box element-box-show">
+      <h5 class="form-header"><%= t('.header') %></h5>
+      <div class="form-desc"><%= t('.description') %></div>
+
+      <div class="form-group">
+        <label class="col-form-label" for=""><%= t('conversations/subscriptions.fields.subject.label') %></label>
+        <div>
+          <%= @subscription.subject %>
+        </div>
+      </div>
+      <%# 🚅 super scaffolding will insert new fields above this line. %>
+
+      <div class="form-buttons-w">
+        <%= link_to t('.buttons.edit'), [:edit, :account, @subscription], class: "btn #{first_button_primary}" if can? :edit, @subscription %>
+        <% if @subscription.subscribed? %>
+        <%= link_to t('.buttons.unsubscribe'), [:unsubscribe, :account, @subscription], data: {method: :post}, class: "btn #{first_button_primary}" if can? :unsubscribe, @subscription %>
+        <% else %>
+        <%= link_to t('.buttons.subscribe'), [:subscribe, :account, @subscription], data: {method: :post}, class: "btn #{first_button_primary}" if can? :subscribe, @subscription %>
+        <% end %>
+        <%= link_to t('.buttons.destroy'), [:account, @subscription], method: :delete, class: "btn #{first_button_primary}", data: { confirm: t('.buttons.confirmations.destroy', model_locales(@subscription)) } if can? :destroy, @subscription %>
+        <%= link_to t('global.buttons.back'), [:account, @user, :conversations, :subscriptions], class: "btn #{first_button_primary}" %>
+      </div>
+
+    </div>
+
+    <%# 🚅 super scaffolding will insert new children above this line. %>
+
+  </div>
+</div>

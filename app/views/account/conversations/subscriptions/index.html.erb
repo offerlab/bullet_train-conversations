@@ -1,0 +1,39 @@
+<% if @subscriptions.any? %>
+  <div class="app-email-w forse-show-content">
+    <div class="app-email-i" data-model="User" data-id="<%= @user.id %>">
+      <div class="ae-list-w">
+        <div class="ae-list" data-ps-id="5fa081b2-1773-59a2-e160-54f2ff2a1ccb" data-collection="conversations_subscriptions">
+          <% @subscriptions.latest.each do |subscription| %>
+            <% last_message = subscription.conversation.messages.newest.first %>
+            <% next unless last_message %>
+            <%= link_to [:account, subscription.conversation.subject, anchor: message_anchor(subscription.oldest_unread_message || subscription.newest_message)], class: 'open-inline', data: {target: '#conversation'} do %>
+              <div class="ae-item <%= 'with-status status-blue' if subscription.unread? %>" data-persistent-classes='active' data-model="Conversations::Subscription" data-id="<%= subscription.id %>">
+                <div class="aei-image">
+                  <div class="user-avatar-w">
+                    <img alt="" src="<%= membership_profile_photo_url(last_message.membership) %>">
+                  </div>
+                </div>
+                <div class="aei-content">
+                  <div class="aei-timestamp"><%= display_date_and_time(last_message.created_at) %></div>
+                  <h6 class="aei-title"><%= subscription.subject %></h6>
+                  <div class="aei-sub-title"><%= describe_memberships_for_membership_on_team(subscription.conversation.memberships, subscription.membership, subscription.conversation.team) %></div>
+                  <div class="aei-text"><%= truncate(strip_tags(last_message&.body || 'No messages yet.'), length: 70, separator: ' ') %></div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="ae-content-w">
+        <div class="ae-content">
+          <div id="conversation" class="inline">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="element-wrapper">
+    <div class="alert alert-warning"><%= t(".description_empty") %></div>
+  </div>
+<% end %>

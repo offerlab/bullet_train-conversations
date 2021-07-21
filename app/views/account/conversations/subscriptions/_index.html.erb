@@ -1,0 +1,41 @@
+<div class="element-box">
+  <h5 class="form-header"><%= t('.header') %></h5>
+  <div class="form-desc"><%= raw subscriptions.any? ? t('.description') : t('.description_empty') %></div>
+  <div class="table-responsive">
+    <% if subscriptions.any? %>
+      <table class="table table-lightborder" data-class="Conversations::Subscription" data-collection="conversations_subscriptions">
+        <thead>
+          <tr>
+            <th><%= t('conversations/subscriptions.fields.subject.label') %></th>
+            <th><%= t('conversations/subscriptions.fields.unsubscribed_at.label') %></th>
+            <%# 🚅 super scaffolding will insert new field headers above this line. %>
+            <th><%= t('.fields.created_at.heading') %></th>
+            <th class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% subscriptions.each do |subscription| %>
+          <tr data-id="<%= subscription.id %>">
+            <td><%= link_to subscription.conversation.subject.name, [:account, subscription] %></td>
+            <td><%= display_date(subscription.unsubscribed_at) if subscription.unsubscribed_at %></td>
+            <%# 🚅 super scaffolding will insert new fields above this line. %>
+            <td><%= display_date_and_time(subscription.created_at) %></td>
+            <td class="text-right">
+              <%= link_to t('.buttons.shorthand.edit'), [:edit, :account, subscription], class: 'btn btn-link btn-sm' if can? :edit, subscription %>
+              <% if subscription.subscribed? %>
+              <%= link_to t('.buttons.unsubscribe'), [:unsubscribe, :account, subscription], data: {method: :post}, class: "btn btn-link btn-sm" if can? :unsubscribe, subscription %>
+              <% else %>
+              <%= link_to t('.buttons.subscribe'), [:subscribe, :account, subscription], data: {method: :post}, class: "btn btn-link btn-sm" if can? :subscribe, subscription %>
+              <% end %>
+              <%= link_to t('.buttons.shorthand.destroy'), [:account, subscription], method: :delete, data: { confirm: t('.buttons.confirmations.destroy', model_locales(subscription)) }, class: 'btn btn-link btn-sm' if can? :destroy, subscription %>
+            </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+
+    <%= link_to t('.buttons.new'), [:new, :account, @user, :conversations, :subscription], class: 'btn btn-primary' if can? :create, @user.conversations_subscriptions.new %>
+
+  </div>
+</div>

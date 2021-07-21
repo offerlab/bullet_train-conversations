@@ -1,0 +1,74 @@
+en:
+  conversations/subscriptions: &subscriptions
+    label: &label Conversations
+    navigation:
+      label: Inbox
+      icon: fal fa-comments ti ti-comments
+    breadcrumbs:
+      label: *label
+    buttons: &buttons
+      new: Add New Subscription
+      create: Create Subscription
+      edit: Edit Subscription
+      update: Update Subscription
+      destroy: Remove Subscription
+      subscribe: Resubscribe
+      unsubscribe: Unsubscribe
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{subscription_name}? This will also remove it's associated data. This can't be undone.
+    fields: &fields
+      subject:
+        name: &subject Subject
+        label: *subject
+        heading: *subject
+      unsubscribed_at:
+        name: &unsubscribed_at Unsubscribed At
+        label: *unsubscribed_at
+        heading: *unsubscribed_at
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        name: &created_at Added
+        label: *created_at
+        heading: *created_at
+    index:
+      section: "%{users_possessive} Subscriptions"
+      header: Subscriptions
+      description: Below is a list of Subscriptions that have been added to %{user_name}. You can manage them with the options below.
+      description_empty: Your inbox is empty. You haven't been tagged or included in any conversation threads yet.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{subscription_name}"
+      header: Subscription Details
+      description: Below are the details we have for %{subscription_name}. You'll also find options for updating these details or removing %{subscription_name} from %{user_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+    new:
+      section: "New Subscription for %{user_name}"
+      header: New Subscription Details
+      description: Please provide the details of the new Subscription you'd like to add to %{user_name}.
+      form: *form
+    edit:
+      section: "%{subscription_name}"
+      header: Edit Subscription Details
+      description: You can update the details or settings for %{subscription_name} below.
+      form: *form
+    notifications:
+      created: Subscription was successfully created.
+      updated: Subscription was successfully updated.
+      destroyed: Subscription was successfully destroyed.
+  account:
+    conversations:
+      subscriptions: *subscriptions
+  activerecord:
+    attributes:
+      conversations/subscription:
+        subject: *subject
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
