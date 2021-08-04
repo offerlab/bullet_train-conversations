@@ -74,15 +74,6 @@ class Conversation < ApplicationRecord
     end
   end
 
-  def broadcast
-    active_subscriptions.find_each do |subscription|
-      Membership.broadcast_collection(subscription.membership_id, :conversations_subscriptions)
-      if subscription.membership.user_id
-        User.broadcast_collection(subscription.membership.user_id, :conversations_subscriptions)
-      end
-    end
-  end
-
   def newest_message
     messages.newest.first
   end

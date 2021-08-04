@@ -64,10 +64,6 @@ class Conversations::Message < ApplicationRecord
     "this message"
   end
 
-  def broadcast
-    Conversation.broadcast_collection(conversation_id, :messages)
-  end
-
   def mentioned_memberships
     Nokogiri::HTML(body).css('a[href^="bullettrain://memberships/"]').map do |mention|
       membership_id = mention["href"].split("/").last.to_i
