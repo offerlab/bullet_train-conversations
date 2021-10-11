@@ -1,5 +1,4 @@
 module ConversationsScaffolder
-
   def conversations_help
     puts ""
     puts "🚅  usage: bin/super-scaffold conversation <Model> <ParentModels> [association_name]"
@@ -14,29 +13,28 @@ module ConversationsScaffolder
   end
 
   def scaffold_conversation argv
-
     child = argv[0]
-    parents = argv[1] ? argv[1].split(',') : []
-    parents += ['Team']
+    parents = argv[1] ? argv[1].split(",") : []
+    parents += ["Team"]
     parents = parents.map(&:classify).uniq
     parent = parents.first
 
     # get the attribute.
-    name = argv[2].presence || 'conversation'
+    name = argv[2].presence || "conversation"
 
     transformer = Scaffolding::Transformer.new(child, parents, @options)
 
-    output = `rails g migration add_#{transformer.transform_string('scaffolding_completely_concrete_tangible_thing')}_to_conversations #{transformer.transform_string('scaffolding_completely_concrete_tangible_thing')}:references`
-    if output.include?('conflict') || output.include?('identical')
+    output = `rails g migration add_#{transformer.transform_string("scaffolding_completely_concrete_tangible_thing")}_to_conversations #{transformer.transform_string("scaffolding_completely_concrete_tangible_thing")}:references`
+    if output.include?("conflict") || output.include?("identical")
       puts "\n👆 No problem! Looks like you're re-running this Super Scaffolding command. We can work with the model already generated!\n".green
     end
 
-    migration_file_name = `grep "add_reference :conversations, :#{transformer.transform_string('scaffolding_completely_concrete_tangible_thing')}" db/migrate/*`.split(":").first
+    migration_file_name = `grep "add_reference :conversations, :#{transformer.transform_string("scaffolding_completely_concrete_tangible_thing")}" db/migrate/*`.split(":").first
 
-    legacy_replace_in_file(migration_file_name, 'null: false', 'null: true')
+    legacy_replace_in_file(migration_file_name, "null: false", "null: true")
 
-    if "index_conversations_on_#{transformer.transform_string('scaffolding_completely_concrete_tangible_thing')}_id".length > 63
-      legacy_replace_in_file(migration_file_name, 'foreign_key: true', "foreign_key: true, index: {name: '#{"index_conversations_on_#{transformer.transform_string('tangible_thing')}_id"}'}")
+    if "index_conversations_on_#{transformer.transform_string("scaffolding_completely_concrete_tangible_thing")}_id".length > 63
+      legacy_replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: true, index: {name: '#{"index_conversations_on_#{transformer.transform_string("tangible_thing")}_id"}'}")
     end
 
     transformer.scaffold_add_line_to_file(
@@ -58,7 +56,7 @@ module ConversationsScaffolder
   def create_#{name}_on_team
       #{name} || create_#{name}(team: team)
     end
-  HEREDOC
+    HEREDOC
 
     transformer.scaffold_add_line_to_file(
       "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
@@ -69,7 +67,7 @@ module ConversationsScaffolder
 
     transformer.scaffold_add_line_to_file(
       "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-      "has_one :#{name}, #{name == 'conversation' ? '' : 'class_name: "Conversation", '}foreign_key: :scaffolding_completely_concrete_tangible_thing_id, dependent: :destroy",
+      "has_one :#{name}, #{name == "conversation" ? "" : 'class_name: "Conversation", '}foreign_key: :scaffolding_completely_concrete_tangible_thing_id, dependent: :destroy",
       "# 🚅 add has_one associations above.",
       prepend: true
     )
@@ -84,7 +82,7 @@ module ConversationsScaffolder
     transformer.add_line_to_file("./app/models/ability.rb", transformer.build_conversation_ability_line.first, "# 🚅 super scaffolding will insert any new resources with conversations above.", prepend: true)
 
     model_file_content = File.readlines(transformer.transform_string("./app/models/scaffolding/completely_concrete/tangible_thing.rb")).join
-    unless model_file_content.include?('belongs_to :team') ||
+    unless model_file_content.include?("belongs_to :team") ||
         model_file_content.match?(/\sdef team\s/) ||
         model_file_content.match?(/\sdelegate :team,/)
       transformer.scaffold_add_line_to_file(
@@ -111,6 +109,4 @@ module ConversationsScaffolder
 
     puts transformer.transform_string("\n1. We've generated a database migration, so please run `rake db:migrate` on the command line shell!\n").yellow
   end
-
-
 end
