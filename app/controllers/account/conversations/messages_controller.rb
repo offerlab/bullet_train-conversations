@@ -29,7 +29,7 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
       @message.user = current_user
       @message.membership = current_membership
       if @message.save
-        format.turbo_stream { }
+        format.turbo_stream {}
         format.html { redirect_back(fallback_location: [:account, @conversation, :conversations_messages]) }
         format.json { render :show, status: :created, location: [:account, @conversation, @message] }
       else

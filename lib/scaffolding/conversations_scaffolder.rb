@@ -17,7 +17,6 @@ module ConversationsScaffolder
     parents = argv[1] ? argv[1].split(",") : []
     parents += ["Team"]
     parents = parents.map(&:classify).uniq
-    parent = parents.first
 
     # get the attribute.
     name = argv[2].presence || "conversation"
