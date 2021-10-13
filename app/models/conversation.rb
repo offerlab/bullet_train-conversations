@@ -11,7 +11,7 @@ class Conversation < ApplicationRecord
   belongs_to :kanban_card, class_name: "Kanban::Card", optional: true
 
   # messages.
-  has_many :messages, class_name: "Conversations::Message", dependent: :destroy
+  has_many :messages, class_name: "Conversations::Message", dependent: :destroy, enable_updates: true, inverse_of: :conversation
   belongs_to :last_message, class_name: "Conversations::Message", optional: true
 
   # user subscriptions.

@@ -9,6 +9,7 @@ class Conversations::Message < ApplicationRecord
   belongs_to :message, optional: true
   belongs_to :membership, optional: true
   belongs_to :user, optional: true
+  has_one :last_message_conversation, class_name: "Conversation", foreign_key: :last_message_id, dependent: :nullify
 
   scope :before, lambda { |timestamp| where("created_at < ?", timestamp) }
   scope :since, lambda { |timestamp| where("created_at > ?", timestamp) }
