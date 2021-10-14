@@ -18,10 +18,10 @@
     <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
       <% unless hide_message_form %>
         <div class="chat-controls">
-          <%= form_with(model: [:account, conversation, @message], remote: true, class: 'new-message-form', data: {scroll: "[data-model='Conversation']", conversation: "messages_#{conversation.id}"}, test: 'this', conversation: "messages_#{conversation.id}") do |form| %>
+          <%= form_with(model: [:account, conversation, @message], remote: true, class: 'new-message-form', data: {controller: "forms", action: "submit->forms#stripTrix turbo:submit-end->forms#resetOnSuccess"}) do |form| %>
             <%= render 'shared/forms/errors', form: form %>
             <div class="chat-input relative">
-              <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {enter: 'submit'}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"}, other_options: {hide_label: true} %>
+              <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {action: 'keydown->forms#submitOnReturn', "forms-target": "trixField"}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"}, other_options: {hide_label: true} %>
               <button type="submit" class="h-10 w-10 has-tooltip absolute inline-flex items-center justify-center rounded-full transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none bottom-10 right-2 p-2">
                 <span class='tooltip rounded shadow-lg p-1 bg-black text-white mt-24 opacity-50'>Send (⌘Enter)</span>
                 <i class="ti ti-arrow-up"></i>
