@@ -8,7 +8,7 @@
     </div>
     <div class="w-4/5 md:w-full lg:w-4/5 pl-4 pr-1 flex-initial truncate">
       <p class="text-xs text-gray-300 text-right hover:no-underline"><%= "#{time_ago_in_words conversation.last_message.created_at} ago" unless conversation.last_message.nil? %></p>
-      <h2 class="<%= subscription.unread? ? 'font-bold text-gray-800' : 'font-semibold text-gray-600' %> "><%= conversation.subject.label_string %></h2>
+      <h2 class="<%= subscription.unread? ? 'font-bold text-gray-800' : 'font-semibold text-gray-600' %> "><%= conversation.subject&.label_string %></h2>
       <div class="text-gray-300">
         <%= conversation.last_message&.user&.label_string %>
       </div>

@@ -12,8 +12,8 @@ class Account::Conversations::SubscriptionsController < Account::ApplicationCont
     conversation_id = params[:conversation_id] || session[:last_inbox_conversation_id]
     session[:last_inbox_conversation_id] = conversation_id
     if conversation_id
-      @conversation = Conversation.find(conversation_id)
-      if @conversation.subscriptions.where(membership: current_membership).none?
+      @conversation = Conversation.find_by(id: conversation_id)
+      if @conversation.nil? || @conversation.subscriptions.where(membership: current_membership).none?
         @conversation = nil
         session[:last_inbox_conversation_id] = nil
       else
