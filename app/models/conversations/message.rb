@@ -26,7 +26,7 @@ class Conversations::Message < ApplicationRecord
     conversation.broadcast
   end
 
-  after_save :create_subscriptions_to_conversation
+  after_save :create_subscriptions_to_conversation, :mark_subscription_as_read
 
   delegate :team, to: :conversation
 
@@ -85,6 +85,11 @@ class Conversations::Message < ApplicationRecord
     mentioned_teams.each do |mentioned_team|
       conversation.create_subscriptions_for_memberships(mentioned_team.memberships)
     end
+  end
+
+  def mark_subscription_as_read
+    return unless membership.present?
+    conversation.subscriptions.where(membership: membership).map(&:mark_read)
   end
 
   def update_mention_labels

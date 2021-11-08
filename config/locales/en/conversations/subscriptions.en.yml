@@ -63,6 +63,8 @@ en:
       created: Subscription was successfully created.
       updated: Subscription was successfully updated.
       destroyed: Subscription was successfully destroyed.
+      empty_state: You don't have any current conversations. <br>Start a conversation on an object to see it here.
+      none_selected: Select a conversation in the left hand pane to see the details here.
   account:
     conversations:
       subscriptions: *subscriptions

@@ -24,6 +24,10 @@ class Conversation < ApplicationRecord
     update(last_message: nil)
   end
 
+  after_save do
+    subscriptions.map(&:touch)
+  end
+
   # ✅ YOUR APPLICATION'S CONVERSATION FUNCTIONALITY
   # This is the place where you should implement your own features on top of Bullet Train's conversation functionality.
   # There are a bunch of Super Scaffolding hooks here by default to try and help keep generated code logically

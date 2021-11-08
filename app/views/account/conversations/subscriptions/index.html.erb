@@ -1,39 +1,87 @@
-<% if @subscriptions.any? %>
-  <div class="app-email-w forse-show-content">
-    <div class="app-email-i" data-model="User" data-id="<%= @user.id %>">
-      <div class="ae-list-w">
-        <div class="ae-list" data-ps-id="5fa081b2-1773-59a2-e160-54f2ff2a1ccb" data-collection="conversations_subscriptions">
-          <% @subscriptions.latest.each do |subscription| %>
-            <% last_message = subscription.conversation.messages.newest.first %>
-            <% next unless last_message %>
-            <%= link_to [:account, subscription.conversation.subject, anchor: message_anchor(subscription.oldest_unread_message || subscription.newest_message)], class: 'open-inline', data: {target: '#conversation'} do %>
-              <div class="ae-item <%= 'with-status status-blue' if subscription.unread? %>" data-persistent-classes='active' data-model="Conversations::Subscription" data-id="<%= subscription.id %>">
-                <div class="aei-image">
-                  <div class="user-avatar-w">
-                    <img alt="" src="<%= membership_profile_photo_url(last_message.membership) %>">
-                  </div>
-                </div>
-                <div class="aei-content">
-                  <div class="aei-timestamp"><%= display_date_and_time(last_message.created_at) %></div>
-                  <h6 class="aei-title"><%= subscription.subject %></h6>
-                  <div class="aei-sub-title"><%= describe_memberships_for_membership_on_team(subscription.conversation.memberships, subscription.membership, subscription.conversation.team) %></div>
-                  <div class="aei-text"><%= truncate(strip_tags(last_message&.body || 'No messages yet.'), length: 70, separator: ' ') %></div>
-                </div>
-              </div>
+<div class=" h-full overflow-hidden flex flex-col relative border rounded-lg bg-white"
+  data-controller="slideover"
+  data-slideover-entering-classes="duration-300 ease-in,duration-300"
+  data-slideover-leaving-classes="duration-300 ease-out,duration-300"
+  data-slideover-visible-classes=",opacity-75"
+  data-slideover-invisible-classes="-translate-x-full,opacity-0"
+  data-slideover-open-value="false"
+  >
+  <%= turbo_frame_tag "subscriptions_#{current_membership.id}", target: '_top' do %>
+    <div class="flex relative">
+      <div class="w-3/4 md:w-2/5 bg-white md:overflow-y-scroll h-full overflow-y-scroll md:h-screen md:relative absolute md:inline z-20 border md:border-none transform -translate-x-full md:transform-none"
+        data-slideover-target="menu"
+        data-slideover-open-classes="test and test"
+        >
+        <div class="md:hidden items-end flex rounded-tl-lg">
+          <div class="bg-gray-50 w-full flex-grow"></div>
+          <button class="m-2 mr-4"
+            data-action="slideover#toggle"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current text-gray-300 hover:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+
+          </button>
+        </div>
+        <%= updates_for current_membership, :conversations_subscriptions do %>
+          <% if @subscriptions.any? %>
+            <% 1.times do %>
+              <% @subscriptions.in_sort_order.each do |subscription| %>
+                <%= render 'shared/conversation_card', subscription: subscription, current_conversation: @conversation&.id == subscription.conversation.id %>
+              <% end %>
             <% end %>
+          <% else %>
+            <div class="p-4 mt-14 text-gray-500 bg-white m-4 rounded text-center border-dashed border-2 text-lg">
+              <%= t("account.conversations.subscriptions.notifications.empty_state").html_safe %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <!-- Right hand pane -->
+      <div class="md:w-3/5  md:border-l-2 rounded-none z-10 w-full md:h-screen md:overflow-y-scroll">
+
+        <!-- slideover overlay -->
+        <div class="bg-gray-600 opacity-0 inset-0 absolute z-20 transform hidden md:hidden" data-slideover-target="overlay" data-action="click->slideover#toggle"></div>
+        <div class="px-4 py-2 md:hidden">
+        <!-- Back button for small screens to go back to the conversation list -->
+        <% if @subscriptions.any? %>
+          <button data-slideover-target="button" data-action="slideover#toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+            </svg>
+          </button>
+        <% end %>
+        </div>
+        <div class="" >
+          <% if @conversation %>
+            <%= render 'account/conversations/messages/index', conversation: @conversation, heading: @conversation.subject.label_string %>
+          <% elsif @subscriptions.any? %>
+            <div class="p-4 pt-8">
+              <div class="bg-gray-200 w-72 rounded-lg rounded-bl-none p-4 pb-6 opacity-50">
+                <% 3.times do %>
+                  <div class="w-64 h-2 bg-gray-300 rounded mt-2 animate-pulse"></div>
+                <% end %>
+              </div>
+              <div class="bg-blue-400 w-72 rounded-lg rounded-br-none p-4 pb-6 opacity-50 float-right mt-4">
+                <% 3.times do %>
+                  <div class="w-64 h-2 bg-blue-300 rounded mt-2 animate-pulse"></div>
+                <% end %>
+              </div>
+              <div class="m-4 p-4 text-gray-500 rounded text-center border-dashed border-2 text-lg inline-block">
+                <%= t("account.conversations.subscriptions.notifications.none_selected") %>
+              </div>
+
+            </div>
+          <% else %>
+            <div class="p-4 mt-14 text-gray-500 bg-white m-4 rounded text-center border-dashed border-2 text-lg md:hidden">
+              <%= t("account.conversations.subscriptions.notifications.empty_state").html_safe %>
+            </div>
           <% end %>
         </div>
       </div>
-      <div class="ae-content-w">
-        <div class="ae-content">
-          <div id="conversation" class="inline">
-          </div>
-        </div>
-      </div>
+
     </div>
-  </div>
-<% else %>
-  <div class="element-wrapper">
-    <div class="alert alert-warning"><%= t(".description_empty") %></div>
-  </div>
-<% end %>
+  <% end %>
+</div>
+

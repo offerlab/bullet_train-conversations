@@ -9,6 +9,18 @@ class Account::Conversations::SubscriptionsController < Account::ApplicationCont
   # GET /account/users/:user_id/conversations/subscriptions
   # GET /account/users/:user_id/conversations/subscriptions.json
   def index
+    conversation_id = params[:conversation_id] || session[:last_inbox_conversation_id]
+    session[:last_inbox_conversation_id] = conversation_id
+    if conversation_id
+      @conversation = Conversation.find(conversation_id)
+      if @conversation.subscriptions.where(membership: current_membership).none?
+        @conversation = nil
+        session[:last_inbox_conversation_id] = nil
+      else
+        raise "Unauthorized" unless can? :show, @conversation
+        @conversation.mark_read_for_membership(current_membership)
+      end
+    end
   end
 
   # GET /account/conversations/subscriptions/:id
