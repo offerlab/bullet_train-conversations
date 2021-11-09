@@ -69,6 +69,7 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
   def message_params
     strong_params = params.require(:conversations_message).permit(
       :body,
+      :parent_message_id,
       # 🚅 super scaffolding will insert new fields above this line.
       # 🚅 super scaffolding will insert new arrays above this line.
     )

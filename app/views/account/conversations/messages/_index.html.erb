@@ -1,48 +1,60 @@
 <% hide_message_form ||= false %>
-<% messages ||= conversation.messages.oldest %>
+<% messages ||= conversation.messages.without_replies.oldest %>
 <% heading ||= nil %>
 <% heading ||= "Start a conversation about this below!" if messages.empty? %>
 <% @message ||= Conversations::Message.new(conversation: conversation) unless hide_message_form %>
+<% conversation.mark_read_for_membership(current_membership) %>
 
 <%= render 'account/shared/box' do |p| %>
   <% p.content_for :title, heading || t('.header') %>
   <% p.content_for :body do %>
-    <%= updates_for conversation, :messages do  %>
-      <div id="messages_<%= conversation.id %>" class="flex flex-col p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
-        <%= turbo_frame_tag "messages" do %>
-          <% messages.each_with_index do |message, index| %>
-            <%= render 'account/shared/message', message: message, next_message: messages[index + 1] %>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-    <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
-      <% unless hide_message_form %>
-        <div class="chat-controls">
-          <%= form_with(model: [:account, conversation, @message], remote: true, class: 'new-message-form', data: {controller: "forms", action: "submit->forms#stripTrix turbo:submit-end->forms#resetOnSuccess"}) do |form| %>
-            <%= render 'shared/forms/errors', form: form %>
-            <div class="chat-input relative">
-              <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {action: 'keydown->forms#submitOnReturn', "forms-target": "trixField"}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"}, other_options: {hide_label: true} do |p| %>
-                <% p.content_for :submit_button do %>
-                  <button type="submit" class="h-10 w-10 has-tooltip absolute inline-flex items-center justify-center rounded-full transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none bottom-2 right-2">
-                    <span class='tooltip rounded shadow-lg p-1 bg-black text-white mt-24 opacity-50'>Send (⌘Enter)</span>
-                    <i class="ti ti-arrow-up"></i>
-                    <% if false %>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 transform rotate-90">
-                      <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                    </svg>
-                    <% end %>
-                  </button>
+    <div
+      data-controller="reply"
+      >
+      <%= updates_for conversation, :messages do  %>
+        <div id="messages_<%= conversation.id %>" class="flex flex-col p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch relative">
+          <%= turbo_frame_tag "messages" do %>
+            <div
+              data-action="click->reply#cancel"
+              >
+              <div class="">
+                <% messages.each_with_index do |message, index| %>
+                  <%= render 'account/shared/message', message: message, next_message: messages[index + 1] %>
                 <% end %>
-              <% end %>
-            </div>
-            <div class="chat-input-extra">
-              <div class="chat-btn">
               </div>
             </div>
           <% end %>
         </div>
       <% end %>
+      <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+        <% unless hide_message_form %>
+          <div class="chat-controls">
+            <%= form_with(model: [:account, conversation, @message], remote: true, class: 'new-message-form', data: {controller: "forms", action: "submit->forms#stripTrix turbo:submit-end->forms#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
+              <%= form.hidden_field :parent_message_id, value: nil, data: { "reply-target": "parentMessage" } %>
+              <%= render 'shared/forms/errors', form: form %>
+              <div class="chat-input relative">
+                <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {action: 'keydown->forms#submitOnReturn', "forms-target": "trixField", "reply-target": "input"}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"}, other_options: {hide_label: true} do |p| %>
+                  <% p.content_for :submit_button do %>
+                    <button type="submit" class="h-10 w-10 has-tooltip absolute inline-flex items-center justify-center rounded-full transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none bottom-2 right-2">
+                      <span class='tooltip rounded shadow-lg p-1 bg-black text-white mt-24 opacity-50'>Send (⌘Enter)</span>
+                      <i class="ti ti-arrow-up"></i>
+                      <% if false %>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 transform rotate-90">
+                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                      </svg>
+                      <% end %>
+                    </button>
+                  <% end %>
+                <% end %>
+              </div>
+              <div class="chat-input-extra">
+                <div class="chat-btn">
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
     </div>
   <% end %>
 <% end %>

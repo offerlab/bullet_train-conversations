@@ -9,10 +9,13 @@ class Conversations::Message < ApplicationRecord
   belongs_to :message, optional: true
   belongs_to :membership, optional: true
   belongs_to :user, optional: true
+  belongs_to :parent_message, optional: true, class_name: "Conversations::Message"
   has_one :last_message_conversation, class_name: "Conversation", foreign_key: :last_message_id, dependent: :nullify
+  has_many :replies, class_name: "Conversations::Message", foreign_key: :parent_message_id, dependent: :destroy # Should we destroy replies when a message is deleted?
 
   scope :before, lambda { |timestamp| where("created_at < ?", timestamp) }
   scope :since, lambda { |timestamp| where("created_at > ?", timestamp) }
+  scope :without_replies, -> { where(parent_message: nil) }
 
   validates :body, presence: true
 
@@ -111,5 +114,9 @@ class Conversations::Message < ApplicationRecord
     conversation.active_subscriptions.find_each do |subscription|
       subscription.mark_unread
     end
+  end
+
+  def reply?
+    parent_message.present?
   end
 end
