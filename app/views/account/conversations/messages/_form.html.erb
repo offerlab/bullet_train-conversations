@@ -1,16 +1,24 @@
-<%= form_with(model: [:account, (@conversation unless message.persisted?), message], local: true) do |form| %>
+
+<%= form_with(model: [:account, conversation, message], remote: true, class: 'new-message-form', data: {controller: "forms", action: "submit->forms#stripTrix turbo:submit-end->forms#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
+  <%= form.hidden_field :parent_message_id, value: message.parent_message_id, data: { "reply-target": "parentMessage" } %>
   <%= render 'shared/forms/errors', form: form %>
-
-  <%= render 'shared/fields/text_area', form: form, method: :body %>
-  <%# 🚅 super scaffolding will insert new fields above this line. %>
-
-  <div class="form-buttons-w">
-    <%= form.submit (form.object.persisted? ? t('.buttons.update') : t('.buttons.create')), class: "btn btn-primary" %>
-    <% if form.object.persisted? %>
-    <%= link_to t('global.buttons.cancel'), [:account, message], class: "btn btn-link" %>
-    <% else %>
-    <%= link_to t('global.buttons.cancel'), [:account, @conversation, :conversations, :messages], class: "btn btn-link" %>
+  <div class="chat-input relative">
+    <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {action: 'keydown->forms#submitOnReturn', "forms-target": "trixField", "reply-target": "input"}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none", id: "conversations_message_#{message.id}_#{message.parent_message_id}"}, other_options: {hide_label: true} do |p| %>
+      <% p.content_for :submit_button do %>
+        <button type="submit" class="h-10 w-10 has-tooltip absolute inline-flex items-center justify-center rounded-full transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none bottom-2 right-2">
+          <span class='tooltip rounded shadow-lg p-1 bg-black text-white mt-24 opacity-50'>Send (⌘Enter)</span>
+          <i class="ti ti-arrow-up"></i>
+          <% if false %>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 transform rotate-90">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+          </svg>
+          <% end %>
+        </button>
+      <% end %>
     <% end %>
   </div>
-
+  <div class="chat-input-extra">
+    <div class="chat-btn">
+    </div>
+  </div>
 <% end %>

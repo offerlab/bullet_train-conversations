@@ -1,5 +1,5 @@
 class Account::Conversations::MessagesController < Account::ApplicationController
-  account_load_and_authorize_resource :message, through: :conversation, through_association: :messages
+  account_load_and_authorize_resource :message, through: :conversation, through_association: :messages, member_actions: [:reply]
 
   # GET /account/conversations/:conversation_id/conversations/messages
   # GET /account/conversations/:conversation_id/conversations/messages.json
@@ -29,6 +29,7 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
       @message.user = current_user
       @message.membership = current_membership
       if @message.save
+        @conversation_style = @conversation.subject.respond_to?(:conversation_style) ? @conversation.subject.conversation_style : :conversation
         format.turbo_stream {}
         format.html { redirect_back(fallback_location: [:account, @conversation, :conversations_messages]) }
         format.json { render :show, status: :created, location: [:account, @conversation, @message] }
@@ -61,6 +62,10 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
       format.html { redirect_to [:account, @conversation, :conversations, :messages], notice: I18n.t("conversations/messages.notifications.destroyed") }
       format.json { head :no_content }
     end
+  end
+
+  def reply
+    @reply = @message.replies.build
   end
 
   private
