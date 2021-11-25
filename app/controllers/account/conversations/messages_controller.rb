@@ -1,5 +1,5 @@
 class Account::Conversations::MessagesController < Account::ApplicationController
-  account_load_and_authorize_resource :message, through: :conversation, through_association: :messages, member_actions: [:reply]
+  account_load_and_authorize_resource :message, through: :conversation, through_association: :messages, member_actions: [:reply, :thread]
 
   # GET /account/conversations/:conversation_id/conversations/messages
   # GET /account/conversations/:conversation_id/conversations/messages.json
@@ -29,7 +29,7 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
       @message.user = current_user
       @message.membership = current_membership
       if @message.save
-        @conversation_style = @conversation.subject.respond_to?(:conversation_style) ? @conversation.subject.conversation_style : :conversation
+        @style = params[:conversations_message][:style] || :conversation
         format.turbo_stream {}
         format.html { redirect_back(fallback_location: [:account, @conversation, :conversations_messages]) }
         format.json { render :show, status: :created, location: [:account, @conversation, @message] }
@@ -66,6 +66,10 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
 
   def reply
     @reply = @message.replies.build
+  end
+
+  def thread
+    render 'account/conversations/messages/thread', layout: false
   end
 
   private

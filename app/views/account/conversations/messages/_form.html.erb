@@ -1,6 +1,7 @@
-
+<% style ||= :conversation %>
 <%= form_with(model: [:account, conversation, message], remote: true, class: 'new-message-form', data: {controller: "forms", action: "submit->forms#stripTrix turbo:submit-end->forms#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
   <%= form.hidden_field :parent_message_id, value: message.parent_message_id, data: { "reply-target": "parentMessage" } %>
+  <%= form.hidden_field :style, value: style %>
   <%= render 'shared/forms/errors', form: form %>
   <div class="chat-input relative">
     <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {action: 'keydown->forms#submitOnReturn', "forms-target": "trixField", "reply-target": "input"}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none", id: "conversations_message_#{message.id}_#{message.parent_message_id}"}, other_options: {hide_label: true} do |p| %>

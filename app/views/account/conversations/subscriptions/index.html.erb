@@ -25,10 +25,8 @@
         </div>
         <%= updates_for current_membership, :conversations_subscriptions do %>
           <% if @subscriptions.any? %>
-            <% 1.times do %>
-              <% @subscriptions.in_sort_order.each do |subscription| %>
-                <%= render 'shared/conversation_card', subscription: subscription, current_conversation: @conversation&.id == subscription.conversation.id %>
-              <% end %>
+            <% @subscriptions.in_sort_order.each do |subscription| %>
+              <%= render 'shared/conversation_card', subscription: subscription, current_conversation: @conversation&.id == subscription.conversation.id %>
             <% end %>
           <% else %>
             <div class="p-4 md:mt-8 text-gray-500 bg-white m-4 rounded text-center border-dashed border-2 text-lg">
@@ -55,7 +53,7 @@
         </div>
         <div class="" >
           <% if @conversation %>
-            <%= render 'account/conversations/messages/index', conversation: @conversation, heading: @conversation.subject.label_string %>
+            <%= render 'account/conversations/messages/index', conversation: @conversation, heading: @conversation.subject.label_string, within_inbox: true %>
           <% elsif @subscriptions.any? %>
             <div class="p-4 pt-8">
               <div class="bg-gray-200 w-72 rounded-lg rounded-bl-none p-4 pb-6 opacity-50">

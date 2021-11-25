@@ -5,6 +5,7 @@ en:
       label: *label
     navigation:
       label: *label
+      reply: reply
     buttons: &buttons
       new: Add New Message
       create: Send Message
@@ -36,11 +37,12 @@ en:
     index:
       section: "%{conversations_possessive} Messages"
       header: Messages
-      header_blog: Comments
       description: Below is a list of Messages that have been added to %{conversation_name}. You can manage them with the options below.
       description_empty: No Messages have been added for %{conversation_name} yet. To get started, use the button below!
       fields: *fields
       buttons: *buttons
+    blog_comments:
+      header: Comments
     show:
       section: "%{message_name}"
       header: Message Details

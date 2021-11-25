@@ -119,4 +119,42 @@ class Conversations::Message < ApplicationRecord
   def reply?
     parent_message.present?
   end
+
+  def next_message_in_thread
+    return replies.oldest.first if replies.any?
+    return nil unless parent_message_id.present?
+    parent_message.replies.where("created_at > ?", created_at).oldest.first
+  end
+
+  def threaded?
+    reply? || replies.any?
+  end
+
+  def thread_origin_user
+    return nil unless threaded?
+    (parent_message || self).membership.user
+  end
+
+  def previous_message
+    conversation.messages.newest.where("created_at < ?", created_at).first
+  end
+
+  def previous_message_in_thread
+    return nil unless parent_message_id.present?
+    parent_message.replies.where("created_at < ?", created_at).newest.first || parent_message
+  end
+
+  def thread_origin_message
+    return nil unless threaded?
+    parent_message || self
+  end
+
+  def next_message
+    conversation.messages.oldest.where("created_at > ?", created_at).first
+  end
+
+  def thread_id
+    return nil unless threaded?
+    thread_origin_message.id
+  end
 end

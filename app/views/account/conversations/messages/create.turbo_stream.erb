@@ -1,5 +1,5 @@
 <% unless @message.reply? %>
-  <% if @conversation_style == :blog %>
+  <% if @style.to_sym == :blog %>
     <%= turbo_stream.prepend "messages", partial: "/themes/light/comment", locals: {message: @message, next_message: nil, new_message: true} %>
   <% else %>
     <%= turbo_stream.append "messages", partial: "/themes/light/message", locals: {message: @message, next_message: nil, new_message: true} %>
