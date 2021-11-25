@@ -4,7 +4,6 @@
 <% heading ||= "Start a conversation about this below!" if messages.empty? %>
 <% @message ||= Conversations::Message.new(conversation: conversation) unless hide_message_form %>
 <% conversation.mark_read_for_membership(current_membership) %>
-<% within_inbox ||= false %>
 
 <%= render 'account/shared/box' do |p| %>
   <% p.content_for :title, heading || t('.header') %>
