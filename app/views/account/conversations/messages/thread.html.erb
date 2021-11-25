@@ -1,5 +1,5 @@
 
-<div class="flex flex-col w-full max-w-lg mx-auto">
+<div class="flex flex-col w-full mx-auto">
   <%= render 'account/shared/message', message: @message, show_as_thread: true, next_message: @message.next_message_in_thread %>
   <% @message.replies.each do |reply| %>
     <%= render 'account/shared/message', message: reply, show_as_thread: true, next_message: reply.next_message_in_thread %>

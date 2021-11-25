@@ -69,7 +69,7 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
   end
 
   def thread
-    render 'account/conversations/messages/thread', layout: false
+    render "account/conversations/messages/thread", layout: false
   end
 
   private
