@@ -4,6 +4,7 @@ class CreateConversations < ActiveRecord::Migration[5.2]
       t.references :team, foreign_key: true
       t.references :kanban_card, foreign_key: true
       t.datetime :last_message_at
+      t.string :uuid
 
       t.timestamps
     end
