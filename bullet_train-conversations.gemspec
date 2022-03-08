@@ -1,14 +1,14 @@
 require_relative "lib/bullet_train/conversations/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "bullet_train-conversations"
-  spec.version     = BulletTrain::Conversations::VERSION
-  spec.authors     = ["Andrew Culver"]
-  spec.email       = ["andrew.culver@gmail.com"]
-  spec.homepage    = "https://github.com/andrewculver/bullet_train-conversations"
-  spec.summary     = "Bullet Train Conversations"
+  spec.name = "bullet_train-conversations"
+  spec.version = BulletTrain::Conversations::VERSION
+  spec.authors = ["Andrew Culver"]
+  spec.email = ["andrew.culver@gmail.com"]
+  spec.homepage = "https://github.com/andrewculver/bullet_train-conversations"
+  spec.summary = "Bullet Train Conversations"
   spec.description = spec.summary
-    spec.license     = "MIT"
+  spec.license = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
   # to allow pushing to a single host or delete this section to allow pushing to any host.
