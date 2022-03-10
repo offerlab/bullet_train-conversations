@@ -5,6 +5,7 @@ class CreateConversationsSubscriptions < ActiveRecord::Migration[7.0]
       t.references :conversation, foreign_key: true
       t.datetime :unsubscribed_at
       t.datetime :last_read_at
+      t.string :uuid
 
       t.timestamps
     end

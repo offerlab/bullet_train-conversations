@@ -22,7 +22,7 @@
             <div>
               <div class="">
                 <% messages.each_with_index do |message, index| %>
-                  <%= render 'account/shared/comment', message: message, next_message: messages[index + 1] %>
+                  <%= render 'account/shared/conversations/comment', message: message, next_message: messages[index + 1] %>
                 <% end %>
               </div>
             </div>

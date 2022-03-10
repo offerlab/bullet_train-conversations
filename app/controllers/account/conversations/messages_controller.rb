@@ -26,7 +26,6 @@ class Account::Conversations::MessagesController < Account::ApplicationControlle
   # POST /account/conversations/:conversation_id/conversations/messages.json
   def create
     respond_to do |format|
-      @message.user = current_user
       @message.membership = current_membership
       if @message.save
         @style = params[:conversations_message][:style] || :conversation

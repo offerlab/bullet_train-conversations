@@ -1,24 +1,30 @@
-# BulletTrain::Conversations
-Short description and motivation.
-
-## Usage
-How to use my plugin.
+# Bullet Train Conversations
 
 ## Installation
-Add this line to your application's Gemfile:
+
+Add the following to your `Gemfile`:
 
 ```ruby
-gem "bullet_train-conversations"
+source "https://YOUR_LICENSE_KEY@gem.fury.io/bullettrain" do
+  gem "bullet_train-conversations"
+end
 ```
 
-And then execute:
+And run the following on your shell:
+
 ```bash
-$ bundle
+$ bundle install
+$ rake bt:link
+$ rake bullet_train:conversations:install
+$ rails restart
 ```
 
-Or install it yourself as:
+## Example Usage
+
 ```bash
-$ gem install bullet_train-conversations
+rails g model Project team:references name:string
+bin/super-scaffold crud Project Team name:text_field
+bin/super-scaffold conversations Project Team
 ```
 
 ## Contributing

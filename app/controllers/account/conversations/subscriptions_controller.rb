@@ -1,6 +1,10 @@
 class Account::Conversations::SubscriptionsController < Account::ApplicationController
   account_load_and_authorize_resource :subscription, through: :user, through_association: :conversations_subscriptions, member_actions: [:subscribe, :unsubscribe]
 
+  def load_team
+    # TODO Why do we need this? Is it because we're a resource controller that belongs to a user instead of a team?
+  end
+
   before_action do
     @remove_content_padding = true
     @body_class = "fixed-height"

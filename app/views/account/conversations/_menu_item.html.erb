@@ -1,8 +1,15 @@
-<%= render 'account/shared/menu/item', {
-  url: main_app.polymorphic_path([:account, current_team, :conversations]),
-  label: t('conversations.navigation.label'),
-} do |p| %>
-  <% p.content_for :icon do %>
-    <i class="<%= t('conversations.navigation.icon') %>"></i>
+<%= updates_for current_membership, :conversations_subscriptions do %>
+  <%= render 'account/shared/menu/item', {
+    url: main_app.polymorphic_path([:account, current_user, :conversations, :subscriptions]),
+    label: t('conversations/subscriptions.navigation.label'),
+  } do |p| %>
+    <% p.content_for :icon do %>
+      <i class="<%= t('conversations/subscriptions.navigation.icon') %>"></i>
+    <% end %>
+    <% p.content_for :badge do %>
+      <% if (conversation_count = current_user.conversations_subscriptions.unread.size) && conversation_count > 0 %>
+        <%= conversation_count %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

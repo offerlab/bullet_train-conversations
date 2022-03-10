@@ -1,7 +1,9 @@
 <% unless @message.reply? %>
   <% if @style.to_sym == :blog %>
-    <%= turbo_stream.prepend "messages", partial: "/themes/light/comment", locals: {message: @message, next_message: nil, new_message: true} %>
+    <% # TODO We need to make this respect `shared/conversations/comment` the same way `render` does in `bullet_train-themes`. %>
+    <%= turbo_stream.prepend "messages", partial: "themes/light/conversations/comment", locals: {message: @message, next_message: nil, new_message: true} %>
   <% else %>
-    <%= turbo_stream.append "messages", partial: "/themes/light/message", locals: {message: @message, next_message: nil, new_message: true} %>
+    <% # TODO We need to make this respect `shared/conversations/comment` the same way `render` does in `bullet_train-themes`. %>
+    <%= turbo_stream.append "messages", partial: "themes/light/conversations/message", locals: {message: @message, next_message: nil, new_message: true} %>
   <% end %>
 <% end %>
