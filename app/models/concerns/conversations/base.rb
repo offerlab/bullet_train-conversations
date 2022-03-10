@@ -4,9 +4,6 @@ module Conversations::Base
   included do
     belongs_to :team
 
-    # resources with conversations by default.
-    belongs_to :kanban_card, class_name: "Kanban::Card", optional: true
-
     # messages.
     has_many :messages, class_name: "Conversations::Message", dependent: :destroy, enable_updates: true, inverse_of: :conversation
     belongs_to :last_message, class_name: "Conversations::Message", optional: true
@@ -27,7 +24,6 @@ module Conversations::Base
   end
 
   def bullet_train_subjects
-    kanban_card
   end
 
   def mark_read_for_membership(membership)
