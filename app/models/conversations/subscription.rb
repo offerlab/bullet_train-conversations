@@ -1,4 +1,4 @@
-class Conversations::Subscription < ApplicationRecord
+class Conversations::Subscription < BulletTrain::Conversations.base_class.constantize
   include Conversations::Subscriptions::Base
   # 🚅 add concerns above.
 

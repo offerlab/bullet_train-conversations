@@ -3,7 +3,8 @@ extending = {only: []}
 Rails.application.routes.draw do
   namespace :account do
     shallow do
-      resources :teams, extending do
+      # e.g. `resources :teams, extending do`
+      resources BulletTrain::Conversations.parent_resource, extending do
         resources :conversations do
           namespace :conversations do
             resources :messages do

@@ -21,7 +21,7 @@
       <div class="form-buttons-w">
         <%= link_to t('.buttons.edit'), [:edit, :account, @conversation], class: "btn #{first_button_primary}" if can? :edit, @conversation %>
         <%= link_to t('.buttons.destroy'), [:account, @conversation], method: :delete, class: "btn #{first_button_primary}", data: { confirm: t('.buttons.confirmations.destroy', model_locales(@conversation)) } if can? :destroy, @conversation %>
-        <%= link_to t('global.buttons.back'), [:account, @team, :conversations], class: "btn #{first_button_primary}" %>
+        <%= link_to t('global.buttons.back'), [:account, @parent, :conversations], class: "btn #{first_button_primary}" %>
       </div>
 
     </div>
@@ -32,4 +32,3 @@
 
   </div>
 </div>
-

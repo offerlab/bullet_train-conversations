@@ -1,12 +1,12 @@
 class Account::ConversationsController < Account::ApplicationController
-  account_load_and_authorize_resource :conversation, through: :team, through_association: :conversations
+  account_load_and_authorize_resource :conversation, through: BulletTrain::Conversations.parent_class, through_association: :conversations
 
   # GET /account/teams/:team_id/conversations
   # GET /account/teams/:team_id/conversations.json
   def index
     # since we're showing conversations on the team show page by default,
     # we might as well just go there.
-    redirect_to [:account, @team]
+    redirect_to [:account, @parent]
   end
 
   # GET /account/conversations/:id
@@ -30,8 +30,8 @@ class Account::ConversationsController < Account::ApplicationController
   def create
     respond_to do |format|
       if @conversation.save
-        format.html { redirect_to [:account, @team, :conversations], notice: I18n.t("conversations.notifications.created") }
-        format.json { render :show, status: :created, location: [:account, @team, @conversation] }
+        format.html { redirect_to [:account, @parent, :conversations], notice: I18n.t("conversations.notifications.created") }
+        format.json { render :show, status: :created, location: [:account, @parent, @conversation] }
       else
         format.html { render :new }
         format.json { render json: @conversation.errors, status: :unprocessable_entity }
@@ -58,7 +58,7 @@ class Account::ConversationsController < Account::ApplicationController
   def destroy
     @conversation.destroy
     respond_to do |format|
-      format.html { redirect_to [:account, @team, :conversations], notice: I18n.t("conversations.notifications.destroyed") }
+      format.html { redirect_to [:account, @parent, :conversations], notice: I18n.t("conversations.notifications.destroyed") }
       format.json { head :no_content }
     end
   end

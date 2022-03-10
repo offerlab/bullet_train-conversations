@@ -47,32 +47,41 @@ module BulletTrain
           increase_indent: true
         )
 
-        transformer.scaffold_add_line_to_file(
-          "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-          "after_create :create_#{name}_on_team",
-          "# 🚅 add callbacks above.",
-          prepend: true
-        )
+        if name != "conversation"
+          transformer.scaffold_add_line_to_file(
+            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
+            "after_create :create_#{name}_on_team",
+            "# 🚅 add callbacks above.",
+            prepend: true
+          )
 
-        snippet = <<-HEREDOC
-      def create_#{name}_on_team
-          #{name} || create_#{name}(team: team)
+          snippet = <<~HEREDOC
+            def create_#{name}_on_team
+              #{name} || create_#{name}(team: team)
+            end
+          HEREDOC
+
+          transformer.scaffold_add_line_to_file(
+            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
+            snippet,
+            "# 🚅 add methods above.",
+            prepend: true
+          )
+
+          transformer.scaffold_add_line_to_file(
+            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
+            "has_one :#{name}, #{name == "conversation" ? "" : 'class_name: "Conversation", '}foreign_key: :scaffolding_completely_concrete_tangible_thing_id, dependent: :destroy",
+            "# 🚅 add has_one associations above.",
+            prepend: true
+          )
+        else
+          transformer.scaffold_add_line_to_file(
+            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
+            "include HasConversation",
+            "# 🚅 add concerns above.",
+            prepend: true
+          )
         end
-        HEREDOC
-
-        transformer.scaffold_add_line_to_file(
-          "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-          snippet,
-          "# 🚅 add methods above.",
-          prepend: true
-        )
-
-        transformer.scaffold_add_line_to_file(
-          "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-          "has_one :#{name}, #{name == "conversation" ? "" : 'class_name: "Conversation", '}foreign_key: :scaffolding_completely_concrete_tangible_thing_id, dependent: :destroy",
-          "# 🚅 add has_one associations above.",
-          prepend: true
-        )
 
         transformer.scaffold_add_line_to_file(
           "./app/views/account/scaffolding/completely_concrete/tangible_things/show.html.erb",
@@ -83,17 +92,18 @@ module BulletTrain
 
         transformer.add_line_to_file("./app/models/ability.rb", transformer.build_conversation_ability_line.first, "# 🚅 super scaffolding will insert any new resources with conversations above.", prepend: true)
 
-        model_file_content = File.readlines(transformer.transform_string("./app/models/scaffolding/completely_concrete/tangible_thing.rb")).join
-        unless model_file_content.include?("belongs_to :team") ||
-            model_file_content.match?(/\sdef team\s/) ||
-            model_file_content.match?(/\sdelegate :team,/)
-          transformer.scaffold_add_line_to_file(
-            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-            "delegate :team, to: :absolutely_abstract_creative_concept",
-            "# 🚅 add delegations above.",
-            prepend: true
-          )
-        end
+        # TODO I don't think there is any situation in which this would be needed going forward.
+        # model_file_content = File.readlines(transformer.transform_string("./app/models/scaffolding/completely_concrete/tangible_thing.rb")).join
+        # unless model_file_content.include?("belongs_to :team") ||
+        #     model_file_content.match?(/\sdef team\s/) ||
+        #     model_file_content.match?(/\sdelegate :team,/)
+        #   transformer.scaffold_add_line_to_file(
+        #     "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
+        #     "delegate :team, to: :absolutely_abstract_creative_concept",
+        #     "# 🚅 add delegations above.",
+        #     prepend: true
+        #   )
+        # end
 
         transformer.scaffold_add_line_to_file(
           "./app/models/conversation.rb",

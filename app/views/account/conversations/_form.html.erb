@@ -1,4 +1,4 @@
-<%= form_with(model: [:account, (@team unless conversation.persisted?), conversation], local: true) do |form| %>
+<%= form_with(model: [:account, (@parent unless conversation.persisted?), conversation], local: true) do |form| %>
   <%= render 'shared/forms/errors', form: form %>
 
   <%= render 'shared/fields/date_field', form: form, method: :last_message_at, options: {autofocus: true} %>
@@ -9,7 +9,7 @@
     <% if form.object.persisted? %>
     <%= link_to t('global.buttons.cancel'), [:account, conversation], class: "btn btn-link" %>
     <% else %>
-    <%= link_to t('global.buttons.cancel'), [:account, @team, :conversations], class: "btn btn-link" %>
+    <%= link_to t('global.buttons.cancel'), [:account, @parent, :conversations], class: "btn btn-link" %>
     <% end %>
   </div>
 

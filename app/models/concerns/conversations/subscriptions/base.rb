@@ -17,7 +17,13 @@ module Conversations::Subscriptions::Base
     scope :active, -> { joins(:messages).where.not(conversations_messages: {id: nil}) }
     scope :in_sort_order, -> { includes(:messages).order("conversations_messages.created_at desc") }
 
-    delegate :team, to: :conversation
+    has_one BulletTrain::Conversations.parent_association, through: :conversation
+
+    if BulletTrain::Conversations.parent_class_specified?
+      # TODO I don't know whether this is the right thing to do here, but the goal here is to provide support for
+      # the situation where `Team` is on a different database than `Workspace`.
+      delegate :team, to: BulletTrain::Conversations.parent_association
+    end
   end
 
   def subject

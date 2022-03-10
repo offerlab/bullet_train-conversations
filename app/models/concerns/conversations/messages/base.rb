@@ -27,7 +27,13 @@ module Conversations::Messages::Base
 
     after_save :create_subscriptions_to_conversation, :mark_subscription_as_read
 
-    delegate :team, to: :conversation
+    has_one BulletTrain::Conversations.parent_association, through: :conversation
+
+    if BulletTrain::Conversations.parent_class_specified?
+      # TODO I don't know whether this is the right thing to do here, but the goal here is to provide support for
+      # the situation where `Team` is on a different database than `Workspace`.
+      delegate :team, to: BulletTrain::Conversations.parent_association
+    end
   end
 
   def user_name
@@ -38,10 +44,14 @@ module Conversations::Messages::Base
     "this message"
   end
 
+  def parent
+    send(BulletTrain::Conversations.parent_association)
+  end
+
   def mentioned_memberships
     Nokogiri::HTML(body).css('a[href^="bullettrain://memberships/"]').map do |mention|
       membership_id = mention["href"].split("/").last.to_i
-      conversation.team.memberships.find_by(id: membership_id)
+      conversation.parent.memberships.find_by(id: membership_id)
     end.compact
   end
 

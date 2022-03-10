@@ -2,7 +2,11 @@ module Conversations::Base
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :team
+    belongs_to BulletTrain::Conversations.parent_association, class_name: BulletTrain::Conversations.parent_class
+
+    if BulletTrain::Conversations.parent_class_specified?
+      has_one :team, through: BulletTrain::Conversations.parent_association
+    end
 
     # messages.
     has_many :messages, class_name: "Conversations::Message", dependent: :destroy, enable_updates: true, inverse_of: :conversation

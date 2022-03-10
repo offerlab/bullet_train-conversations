@@ -28,7 +28,7 @@
       </table>
     <% end %>
 
-    <%= link_to t('.buttons.new'), [:new, :account, @team, :conversation], class: 'btn btn-primary' if can? :create, @team.conversations.new %>
+    <%= link_to t('.buttons.new'), [:new, :account, @parent, :conversation], class: 'btn btn-primary' if can? :create, @parent.conversations.new %>
 
   </div>
 </div>

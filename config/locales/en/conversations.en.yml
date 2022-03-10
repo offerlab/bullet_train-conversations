@@ -30,24 +30,24 @@ en:
         label: *created_at
         heading: *created_at
     index:
-      section: "%{teams_possessive} Conversations"
+      section: "%{parents_possessive} Conversations"
       header: Conversations
-      description: Below is a list of Conversations that have been added to %{team_name}. You can manage them with the options below.
-      description_empty: No Conversations have been added for %{team_name} yet. To get started, use the button below!
+      description: Below is a list of Conversations that have been added to %{parent_name}. You can manage them with the options below.
+      description_empty: No Conversations have been added yet. To get started, use the button below!
       fields: *fields
       buttons: *buttons
     show:
       section: "%{conversation_name}"
       header: Conversation Details
-      description: Below are the details we have for %{conversation_name}. You'll also find options for updating these details or removing %{conversation_name} from %{team_name} entirely.
+      description: Below are the details we have for %{conversation_name}. You'll also find options for updating these details or removing %{conversation_name} entirely.
       fields: *fields
       buttons: *buttons
     form: &form
       buttons: *buttons
     new:
-      section: "New Conversation for %{team_name}"
+      section: "New Conversation"
       header: New Conversation Details
-      description: Please provide the details of the new Conversation you'd like to add to %{team_name}.
+      description: Please provide the details of the new Conversation you'd like to add.
       form: *form
     edit:
       section: "%{conversation_name}"

@@ -9,6 +9,7 @@ module HasConversation
   end
 
   def create_conversation_on_team
-    conversation || create_conversation(team: team)
+    # e.g. conversation || create_conversation(team: team)
+    conversation || create_conversation(BulletTrain::Conversations.parent_association => send(BulletTrain::Conversations.parent_association))
   end
 end
