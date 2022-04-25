@@ -1,5 +1,5 @@
 class Account::ConversationsController < Account::ApplicationController
-  account_load_and_authorize_resource :conversation, through: BulletTrain::Conversations.parent_class, through_association: :conversations
+  account_load_and_authorize_resource :conversation, through: BulletTrain::Conversations.parent_association, through_association: :conversations
 
   # GET /account/teams/:team_id/conversations
   # GET /account/teams/:team_id/conversations.json
