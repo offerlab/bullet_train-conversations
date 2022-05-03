@@ -14,14 +14,14 @@ namespace :bullet_train do
       puts ""
 
       puts "Copying `app/models/conversation.rb` from `bullet_train-conversations` into local repository.".blue
-      target = # {Rails.root.to_s}/app/models/conversation.rb
-        if File.exist?("./app/models/conversation.rb")
-          puts "`./app/models/conversation.rb` already exists.".red
-        else
-          `cp #{root_path}/app/models/conversation.rb #{Rails.root}/app/models/conversation.rb`
-          puts "Done.".green
-          puts ""
-        end
+      target = #{Rails.root.to_s}/app/models/conversation.rb
+      if File.exist?("./app/models/conversation.rb")
+        puts "`./app/models/conversation.rb` already exists.".red
+      else
+        `cp #{root_path}/app/models/conversation.rb #{Rails.root}/app/models/conversation.rb`
+        puts "Done.".green
+        puts ""
+      end
 
       puts "Adding conversation support concerns to `Membership` and `User` models.".blue
       transformer = Scaffolding::Transformer.new("None", "None")
