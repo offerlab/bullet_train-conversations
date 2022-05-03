@@ -3,7 +3,7 @@ module HasConversation
 
   included do
     # e.g. "projects_milestone_id"
-    foreign_key = (self.name.underscore.gsub("/", "_") + "_id").to_sym
+    foreign_key = (name.underscore.tr("/", "_") + "_id").to_sym
     has_one :conversation, foreign_key: foreign_key, dependent: :destroy
     after_create :create_conversation_on_team
   end
