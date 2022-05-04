@@ -7,7 +7,7 @@ module BulletTrain
 
       initializer "bullet_train.super_scaffolding.conversations.templates.register_template_path" do |app|
         # Register the base path of this package with the Super Scaffolding engine.
-        BulletTrain::SuperScaffolding.template_paths << File.expand_path('../../../..', __FILE__)
+        BulletTrain::SuperScaffolding.template_paths << File.expand_path("../../../..", __FILE__)
         BulletTrain::SuperScaffolding.scaffolders.merge!({
           "conversations" => "BulletTrain::Conversations::Scaffolder",
         })

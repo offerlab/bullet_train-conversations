@@ -61,4 +61,21 @@ module Conversations::Base
   def message_before(message)
     messages.oldest.before(message.created_at).last
   end
+
+  def merge!(other)
+    other.messages.update_all(conversation_id: id)
+    other.subscriptions.each do |subscription|
+      if memberships.include?(subscription.membership)
+        # If the subscription already exists on self, we don't need an additional subscription for
+        # the conversation we are merging in.
+        subscription.destroy
+      else
+        subscription.update_columns(conversation_id: id)
+      end
+    end
+    # We need to reload here for any associated records we have changed.
+    other.reload
+    other.destroy
+    self
+  end
 end
