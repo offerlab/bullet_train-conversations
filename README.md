@@ -44,5 +44,9 @@ $ rails restart
 
 Now you should be good to add a new project on your team and then drill down on it to have a conversation!
 
+## Development
+
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests.
+
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
