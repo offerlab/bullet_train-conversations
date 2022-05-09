@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 6.0"
   spec.add_dependency "bullet_train-super_scaffolding"
+  spec.add_dependency "bullet_train-themes-light", ">= 1.0.15"
 
   spec.add_development_dependency "factory_bot_rails"
   spec.add_development_dependency "minitest"
