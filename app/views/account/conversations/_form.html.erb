@@ -1,4 +1,4 @@
-<%= form_with(model: [:account, (@parent unless conversation.persisted?), conversation], local: true) do |form| %>
+<%= form_with(model: [:account, (@parent unless conversation&.persisted?), conversation], local: true) do |form| %>
   <%= render 'shared/forms/errors', form: form %>
 
   <%= render 'shared/fields/date_field', form: form, method: :last_message_at, options: {autofocus: true} %>

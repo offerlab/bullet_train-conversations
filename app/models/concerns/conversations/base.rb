@@ -25,6 +25,9 @@ module Conversations::Base
     after_save do
       subscriptions.map(&:touch)
     end
+
+    accepts_nested_attributes_for :messages
+    delegate :class, :id, to: :subject, prefix: true
   end
 
   def bullet_train_subjects
