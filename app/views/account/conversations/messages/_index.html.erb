@@ -17,8 +17,7 @@
         >
         <%= turbo_frame_tag "focus-reply" %>
       </div>
-      <%# TODO - we need to figure out how to enable updates when the conversation has not been persisted %>
-      <%#= updates_for conversation, :messages do  %>
+      <%= updates_for @message.broadcast_key do %>
         <div id="messages_<%= conversation.id %>" class="flex flex-col p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch relative py-6 px-8">
           <%= turbo_frame_tag "messages" do %>
             <div>
@@ -30,7 +29,7 @@
             </div>
           <% end %>
         </div>
-      <%# end %>
+      <% end %>
       <div class="border-t-2 border-gray-200 mb-2 pt-4 pb-6 px-8 sm:mb-0">
         <% unless hide_message_form %>
           <div class="chat-controls">

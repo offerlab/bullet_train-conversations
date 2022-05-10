@@ -23,6 +23,7 @@ module Conversations::Messages::Base
     after_save do
       conversation.update_last_message
       conversation.mark_read_for_membership(membership)
+      ActionCable.server.broadcast(broadcast_key, {})
     end
 
     after_save :create_subscriptions_to_conversation, :mark_subscription_as_read
@@ -42,6 +43,10 @@ module Conversations::Messages::Base
 
   def label_string
     "this message"
+  end
+
+  def broadcast_key
+    "#{conversation.subject.class.to_s.downcase}_#{conversation.subject.id}_conversation"
   end
 
   def parent
