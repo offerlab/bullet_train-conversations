@@ -46,7 +46,7 @@ module Conversations::Messages::Base
   end
 
   def broadcast_key
-    "#{conversation.subject.class.to_s.downcase}_#{conversation.subject.id}_conversation"
+    "#{conversation.subject.class.to_s.downcase}_#{conversation.subject&.id}_conversation"
   end
 
   def parent
