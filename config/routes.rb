@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     shallow do
       # e.g. `resources :teams, extending do`
       resources BulletTrain::Conversations.parent_resource, extending do
-        resources :conversations do
+        resources :conversations, only: [:show, :create, :update] do
           namespace :conversations do
             resources :messages do
               member do

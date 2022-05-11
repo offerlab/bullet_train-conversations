@@ -39,22 +39,7 @@ module BulletTrain
           legacy_replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: true, index: {name: '#{"index_conversations_on_#{transformer.transform_string("tangible_thing")}_id"}'}")
         end
 
-        transformer.scaffold_add_line_to_file(
-          migration_file_name,
-          "  Scaffolding::CompletelyConcrete::TangibleThing.find_each { |tangible_thing| tangible_thing.create_#{name}_on_team }",
-          "  end",
-          prepend: true,
-          increase_indent: true
-        )
-
         if name != "conversation"
-          transformer.scaffold_add_line_to_file(
-            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-            "after_create :create_#{name}_on_team",
-            "# 🚅 add callbacks above.",
-            prepend: true
-          )
-
           snippet = <<~HEREDOC
             def create_#{name}_on_team
               #{name} || create_#{name}(team: team)
