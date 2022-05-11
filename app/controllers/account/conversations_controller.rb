@@ -20,9 +20,12 @@ class Account::ConversationsController < Account::ApplicationController
           @conversation = subject.create_conversation_on_team
           @parent = @conversation.send(BulletTrain::Conversations.parent_association)
 
+          @style = conversation_params[:style] || :conversation
           @conversation.update!(conversation_params.slice(:messages_attributes))
-          authorize! :create, @conversation.messages.last
+          @message = @conversation.messages.last
+          authorize! :create, @message
 
+          format.turbo_stream { render('account/conversations/messages/create') }
           format.html { redirect_back(fallback_location: [:account, @conversation, :conversations_messages]) }
           format.json { render :show, status: :created, location: [:account, @parent, @conversation] }
         end
@@ -40,6 +43,7 @@ class Account::ConversationsController < Account::ApplicationController
     strong_params = params.require(:conversation).permit(
       :subject_class,
       :subject_id,
+      :style,
       messages_attributes: [:parent_message_id, :body]
       # 🚅 super scaffolding will insert new fields above this line.
       # 🚅 super scaffolding will insert new arrays above this line.

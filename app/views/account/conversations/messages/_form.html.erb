@@ -1,19 +1,16 @@
 <% style ||= :conversation %>
-<%= form_with(model: [:account, conversation, message], remote: true, class: 'new-message-form', data: {controller: "form", action: "submit->form#stripTrix turbo:submit-end->form#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
-  <%= form.hidden_field :parent_message_id, value: message.parent_message_id, data: { "reply-target": "parentMessage" } %>
+<%= form_with(model: conversation.persisted?  ? [:account, conversation, message] : [:account, @team, conversation], remote: true, class: 'new-message-form', data: {controller: "form", action: "submit->form#stripTrix turbo:submit-end->form#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
+
   <%= form.hidden_field :style, value: style %>
   <%= render 'shared/forms/errors', form: form %>
-  <div class="chat-input relative">
-    <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {action: 'keydown->form#submitOnReturn', "form-target": "trixField", "reply-target": "input"}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none", id: "conversations_message_#{message.id}_#{message.parent_message_id}"}, other_options: {hide_label: true} do |p| %>
-      <% p.content_for :submit_button do %>
-        <button type="submit" class="h-10 w-10 absolute inline-flex items-center justify-center rounded-full transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none bottom-2 right-2">
-          <i class="ti ti-arrow-up"></i>
-        </button>
-      <% end %>
+  <% if conversation.persisted? %>
+    <%= render 'account/conversations/messages/field', form: form, message: message %>
+  <% else %>
+    <%= form.hidden_field :subject_id %>
+    <%= form.hidden_field :subject_class %>
+
+    <%= form.fields_for :messages do |message_form| %>
+      <%= render 'account/conversations/messages/field', form: message_form, message: message %>
     <% end %>
-  </div>
-  <div class="chat-input-extra">
-    <div class="chat-btn">
-    </div>
-  </div>
+  <% end %>
 <% end %>

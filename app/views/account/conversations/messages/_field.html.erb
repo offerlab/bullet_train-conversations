@@ -1,19 +1,22 @@
+<% style ||= :conversation %>
 <%= form.hidden_field :parent_message_id, value: nil, data: { "reply-target": "parentMessage" } %>
 <div class="chat-input relative">
-  <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {action: 'keydown->form#submitOnReturn', "form-target": "trixField", "reply-target": "input"}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none"}, other_options: {hide_label: true} do |p| %>
+  <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {action: 'keydown->form#submitOnReturn', "form-target": "trixField", "reply-target": "input"}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none", id: "conversations_message_#{message.id}_#{message.parent_message_id}"}, other_options: {hide_label: true} do |p| %>
     <% p.content_for :submit_button do %>
       <button type="submit" class="h-10 w-10 absolute inline-flex items-center justify-center rounded-full transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none bottom-2 right-2">
         <i class="ti ti-arrow-up"></i>
       </button>
     <% end %>
   <% end %>
-  <div class="mt-1.5 text-xs text-gray-500 hidden opacity-0 transition-opacity duration-300 flex items-center" data-reply-target="replyDescription">
-    <span>Replying to a message</span>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 stroke-current mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-    </svg>
-    <button class="text-blue-400 hover:text-blue-500" data-action="reply#cancel">cancel</button>
-  </div>
+  <% if style == :blog %>
+    <div class="mt-1.5 text-xs text-gray-500 hidden opacity-0 transition-opacity duration-300 flex items-center" data-reply-target="replyDescription">
+      <span>Replying to a message</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-3 stroke-current mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+      </svg>
+      <button class="text-blue-400 hover:text-blue-500" data-action="reply#cancel">cancel</button>
+    </div>
+  <% end %>
 </div>
 <div class="chat-input-extra">
   <div class="chat-btn">

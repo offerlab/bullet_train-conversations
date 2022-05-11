@@ -33,20 +33,7 @@
       <div class="border-t-2 border-gray-200 mb-2 pt-4 pb-6 px-8 sm:mb-0">
         <% unless hide_message_form %>
           <div class="chat-controls">
-            <%= form_with(model: conversation.persisted?  ? [:account, conversation, @message] : [:account, @team, conversation], remote: true, class: 'new-message-form', data: {controller: "form", action: "submit->form#stripTrix turbo:submit-end->form#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
-
-              <%= render 'shared/forms/errors', form: form %>
-              <% if conversation.persisted? %>
-                <%= render 'account/conversations/messages/field', form: form %>
-              <% else %>
-                <%= form.hidden_field :subject_id %>
-                <%= form.hidden_field :subject_class %>
-
-                <%= form.fields_for :messages do |message_form| %>
-                  <%= render 'account/conversations/messages/field', form: message_form %>
-                <% end %>
-              <% end %>
-            <% end %>
+            <%= render 'account/conversations/messages/form', conversation: conversation, message: @message %>
           </div>
         <% end %>
       </div>
