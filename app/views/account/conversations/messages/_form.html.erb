@@ -1,5 +1,5 @@
 <% style ||= :conversation %>
-<%= form_with(model: conversation.persisted?  ? [:account, conversation, message] : [:account, @team, conversation], remote: true, class: 'new-message-form', data: {controller: "form", action: "submit->form#stripTrix turbo:submit-end->form#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
+<%= form_with(model: conversation.persisted?  ? [:account, conversation, message] : [:account, conversation.send(BulletTrain::Conversations.parent_association), conversation], remote: true, class: 'new-message-form', data: {controller: "form", action: "submit->form#stripTrix turbo:submit-end->form#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
 
   <%= form.hidden_field :style, value: style %>
   <%= render 'shared/forms/errors', form: form %>

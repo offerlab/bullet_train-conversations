@@ -8,11 +8,15 @@ module HasConversation
   end
 
   def create_conversation_on_team
-    # e.g. conversation || create_conversation(team: team)
-    conversation.persisted? ? conversation : create_conversation(BulletTrain::Conversations.parent_association => send(BulletTrain::Conversations.parent_association))
+    conversation.persisted? ? conversation : create_conversation(new_conversation_attributes)
   end
 
   def conversation
-    super || build_conversation
+    super || build_conversation(new_conversation_attributes)
+  end
+
+  def new_conversation_attributes
+    # e.g. {team: team}
+    { BulletTrain::Conversations.parent_association => send(BulletTrain::Conversations.parent_association) }
   end
 end
