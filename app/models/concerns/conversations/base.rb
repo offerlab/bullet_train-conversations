@@ -66,6 +66,11 @@ module Conversations::Base
   end
 
   def merge!(other)
+    # If other has not yet been persisted, there is nothing to merge.
+    return self unless other.persisted?
+    # If other has been persisted, but self has not, save first to make the merge database operations work.
+    save unless persisted?
+
     other.messages.update_all(conversation_id: id)
     other.subscriptions.each do |subscription|
       if memberships.include?(subscription.membership)

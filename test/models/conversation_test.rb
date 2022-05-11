@@ -18,6 +18,31 @@ class ConversationTest < ActiveSupport::TestCase
       refute Conversation.exists?(other_conversation.id)
     end
 
+    it "Ignores the other_conversation if it hasn't been persisted" do
+      other_conversation = Conversation.new(team: team)
+      target_conversation.merge!(other_conversation)
+
+      assert Conversation.exists?(target_conversation.id)
+      refute Conversation.exists?(other_conversation.id)
+    end
+
+    it "Merges the other_conversation if the target_conversation hasn't been persisted" do
+      target_conversation = Conversation.new(team: team)
+      target_conversation.merge!(other_conversation)
+
+      assert Conversation.exists?(target_conversation.id)
+      refute Conversation.exists?(other_conversation.id)
+    end
+
+    it "Does nothing if neither conversation has been persisted" do
+      target_conversation = Conversation.new(team: team)
+      other_conversation = Conversation.new(team: team)
+      target_conversation.merge!(other_conversation)
+
+      refute Conversation.exists?(target_conversation.id)
+      refute Conversation.exists?(other_conversation.id)
+    end
+
     describe "Merging messages" do
       before do
         5.times do |i|
