@@ -6,7 +6,7 @@ class ConversationTest < ActiveSupport::TestCase
       team = FactoryBot.build :team
       team.save(validate: false) && team
     }
-    let(:user) { FactoryBot.create :onboarded_user }
+    let(:user) { FactoryBot.create :user }
     let(:membership) { FactoryBot.create(:membership, team: team, user: user) }
     let(:target_conversation) { Conversation.create(team: team) }
     let(:other_conversation) { Conversation.create(team: team) }
@@ -63,7 +63,7 @@ class ConversationTest < ActiveSupport::TestCase
     end
 
     describe "Merging subscriptions" do
-      let(:user2) { FactoryBot.create :onboarded_user }
+      let(:user2) { FactoryBot.create :user }
       let(:membership2) { FactoryBot.create(:membership, team: team, user: user2) }
       let(:target_subscription) { target_conversation.subscriptions.create(membership: membership) }
 

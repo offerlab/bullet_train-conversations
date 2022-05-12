@@ -44,4 +44,12 @@ module Account::ConversationsHelper
       "rounded-bl-none"
     end
   end
+
+  def get_conversation_namespace
+    controller.class.name.split("::").each do |namespace_candidate|
+      return namespace_candidate.underscore.to_sym if namespace_candidate == BulletTrain::Conversations.participant_namespace
+    end
+
+    :account
+  end
 end

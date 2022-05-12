@@ -2,6 +2,7 @@ class Conversation < ApplicationRecord
   include Conversations::Base
   # 🚅 add concerns above.
 
+  belongs_to :document, class_name: 'Document', optional: true
   # 🚅 add belongs_to associations above.
 
   # 🚅 add has_many associations above.
@@ -19,6 +20,7 @@ class Conversation < ApplicationRecord
   # 🚅 add delegations above.
 
   def subject
+    document ||
     bullet_train_subjects # 🚅 add resources with conversations above.
   end
 

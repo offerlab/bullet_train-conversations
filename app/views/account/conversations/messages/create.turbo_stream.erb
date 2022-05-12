@@ -7,3 +7,5 @@
     <%= turbo_stream.append "messages", partial: "themes/light/conversations/message", locals: {message: @message, next_message: nil, new_message: true} %>
   <% end %>
 <% end %>
+
+<%= turbo_stream.replace "message_form", partial: "account/conversations/messages/form", locals: {conversation: @conversation, message: @conversation.messages.new, style: @style&.to_sym} %>

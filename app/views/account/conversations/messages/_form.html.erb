@@ -1,16 +1,19 @@
-<% style ||= :conversation %>
-<%= form_with(model: conversation.persisted?  ? [:account, conversation, message] : [:account, conversation.send(BulletTrain::Conversations.parent_association), conversation], remote: true, class: 'new-message-form', data: {controller: "form", action: "submit->form#stripTrix turbo:submit-end->form#resetOnSuccess turbo:submit-end->reply#cancel"}) do |form| %>
+<%= turbo_frame_tag "message_form" do %>
+  <% style ||= :conversation %>
+  <% conversation_namespace = get_conversation_namespace %>
+  <%= form_with(model: conversation.persisted? ? [conversation_namespace, conversation, message] : [conversation_namespace, conversation.send(BulletTrain::Conversations.parent_association), conversation], class: 'new-message-form') do |form| %>
 
-  <%= form.hidden_field :style, value: style %>
-  <%= render 'shared/forms/errors', form: form %>
-  <% if conversation.persisted? %>
-    <%= render 'account/conversations/messages/field', form: form, message: message %>
-  <% else %>
-    <%= form.hidden_field :subject_id %>
-    <%= form.hidden_field :subject_class %>
+    <%= form.hidden_field :style, value: style %>
+    <%= render 'shared/forms/errors', form: form %>
+    <% if conversation.persisted? %>
+      <%= render 'account/conversations/messages/field', form: form, message: message %>
+    <% else %>
+      <%= form.hidden_field :subject_id %>
+      <%= form.hidden_field :subject_class %>
 
-    <%= form.fields_for :messages do |message_form| %>
-      <%= render 'account/conversations/messages/field', form: message_form, message: message %>
+      <%= form.fields_for :messages do |message_form| %>
+        <%= render 'account/conversations/messages/field', form: message_form, message: message %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
