@@ -7,11 +7,12 @@ module BulletTrain
     # NOTE We specifically don't try to support namespaced replacements for `Team`.
     mattr_accessor :parent_class, default: "Team"
     mattr_accessor :base_class, default: "ApplicationRecord"
-    mattr_accessor :participant_parent_class, default: nil
-    mattr_accessor :participant_namespace, default: nil
-    mattr_accessor :participant_parent_class, default: nil
-    mattr_accessor :participant_parent_controller, default: nil
+    mattr_accessor :participant_parent_class
+    mattr_accessor :participant_namespace
+    mattr_accessor :participant_parent_class
+    mattr_accessor :participant_parent_controller
     mattr_accessor :current_participant_helper_method, default: :current_user
+    mattr_accessor :participant_avatar_partial
 
     def self.parent_association
       parent_class.underscore.to_sym
