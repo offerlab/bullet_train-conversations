@@ -33,8 +33,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pg"
   spec.add_development_dependency "rails", "~> 7.0.0"
   spec.add_development_dependency "bullet_train-integrations-stripe"
-  spec.add_development_dependency "minitest-capybara"
-  spec.add_development_dependency "minitest-rails-capybara"
-  spec.add_development_dependency "pagy"
+  spec.add_development_dependency "minitest-rails"
   spec.add_development_dependency "turbo-rails"
 end
