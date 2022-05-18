@@ -4,6 +4,12 @@ require "rails/all"
 require "bullet_train"
 require "bullet_train/super_scaffolding"
 require "bullet_train/conversations"
+require "bullet_train/themes"
+require "bullet_train/themes/light"
+require "rails/generators"
+require "minitest/rails"
+require "pagy"
+require "turbo-rails"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -13,7 +19,7 @@ module Dummy
     config.load_defaults Rails::VERSION::STRING.to_f
 
     # For compatibility with applications that use this config
-    config.action_controller.include_all_helpers = false
+    config.action_controller.include_all_helpers = true
 
     # Configuration for the application, engines, and railties goes here.
     #

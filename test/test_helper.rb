@@ -10,5 +10,6 @@ require File.expand_path("dummy/config/environment.rb", __dir__)
 ENV["RAILS_ROOT"] ||= File.dirname(__FILE__) + "dummy"
 
 require "minitest/autorun"
-
 require "factory_bot_rails"
+require "minitest/rails"
+

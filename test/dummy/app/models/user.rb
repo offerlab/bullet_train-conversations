@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include Users::Base
   include Conversations::UserSupport
   # 🚅 add concerns above.
 

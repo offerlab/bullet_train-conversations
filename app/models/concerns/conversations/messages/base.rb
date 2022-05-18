@@ -5,6 +5,7 @@ module Conversations::Messages::Base
     belongs_to :conversation
     belongs_to :message, optional: true
     belongs_to :membership, optional: true
+    belongs_to :participant, polymorphic: true, optional: true
     has_one :user, through: :membership
     belongs_to :parent_message, optional: true, class_name: "Conversations::Message"
     has_one :last_message_conversation, class_name: "Conversation", foreign_key: :last_message_id, dependent: :nullify
@@ -38,7 +39,11 @@ module Conversations::Messages::Base
   end
 
   def user_name
-    membership.name
+    membership&.name || participant&.name
+  end
+
+  def author
+    user || participant
   end
 
   def label_string
@@ -68,6 +73,7 @@ module Conversations::Messages::Base
   end
 
   def create_subscriptions_to_conversation
+    return unless membership.present?
     conversation.create_subscriptions_for_memberships([membership])
     conversation.create_subscriptions_for_memberships(mentioned_memberships)
     mentioned_teams.each do |mentioned_team|

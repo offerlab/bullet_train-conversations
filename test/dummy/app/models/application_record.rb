@@ -4,4 +4,9 @@ class ApplicationRecord < ActiveRecord::Base
   include CableReady::Updatable
 
   scope :newest, -> { order("created_at DESC") }
+  scope :oldest, -> { order("created_at ASC") }
+
+  def label_string
+    name
+  end
 end
