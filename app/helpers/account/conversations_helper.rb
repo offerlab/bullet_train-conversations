@@ -52,4 +52,28 @@ module Account::ConversationsHelper
 
     :account
   end
+
+  def conversations_message_mentions
+    mentions = []
+
+    if can?(:read, current_team)
+      mentions << {key: current_team.name, value: current_team.id, protocol: 'bullettrain', model: 'teams', id: current_team.id, label: current_team.name, photo: photo_for(current_team)}
+    end
+
+    current_team.memberships.current_and_invited.map { |membership|
+      if can?(:read, membership)
+        mentions << {
+          key: membership.name,
+          value: membership.id,
+          protocol: 'bullettrain',
+          model: 'memberships',
+          id: membership.id,
+          label: membership.name,
+          photo: membership_profile_photo_url(membership)
+        }
+      end
+    }
+
+    mentions
+  end
 end

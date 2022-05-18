@@ -27,7 +27,6 @@ en:
         name: &body ""
         label: *body
         heading: *body
-        help: "To message someone, type <kbd>@</kbd> followed immediately by their name."
         # help: "Use <kbd>control</kbd> <kbd>command</kbd> <kbd>space</kbd> for emojis and use <kbd>shift</kbd> <kbd>return</kbd> for carriage return."
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
@@ -41,6 +40,8 @@ en:
       description_empty: No Messages have been added for %{conversation_name} yet. To get started, use the button below!
       fields: *fields
       buttons: *buttons
+    field:
+      mentions_help: "To message someone, type <kbd>@</kbd> followed immediately by their name."
     blog_comments:
       header: Comments
     show:
