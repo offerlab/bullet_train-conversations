@@ -19,8 +19,3 @@ eval %{
     BulletTrain::Conversations.current_participant_helper_method
   end
 end
-
-
-
-
-
