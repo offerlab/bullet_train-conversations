@@ -30,6 +30,10 @@ module Conversations::Base
     delegate :class, :id, to: :subject, prefix: true
   end
 
+  def parent
+    send(BulletTrain::Conversations.parent_association)
+  end
+
   def bullet_train_subjects
   end
 
