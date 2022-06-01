@@ -16,13 +16,6 @@ module BulletTrain
       initializer "bullet_train.themes.register" do |app|
         BulletTrain.linked_gems << "bullet_train-conversations"
       end
-
-      config.after_initialize do
-        if BulletTrain::Conversations.participant_namespace.present?
-          require_relative "./participants_controllers/conversations"
-          require_relative "./participants_controllers/messages"
-        end
-      end
     end
   end
 end
