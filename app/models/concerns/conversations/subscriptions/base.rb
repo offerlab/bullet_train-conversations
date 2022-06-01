@@ -4,7 +4,8 @@ module Conversations::Subscriptions::Base
   included do
     include HasUuid
 
-    belongs_to :membership
+    belongs_to :membership, optional: true
+    belongs_to :participant, polymorphic: true, optional: true
     belongs_to :conversation
 
     has_many :messages, through: :conversation

@@ -61,10 +61,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_16_154031) do
     t.datetime "unsubscribed_at"
     t.datetime "last_read_at"
     t.string "uuid"
+    t.string "participant_type"
+    t.bigint "participant_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["conversation_id"], name: "index_conversations_subscriptions_on_conversation_id"
     t.index ["membership_id"], name: "index_conversations_subscriptions_on_membership_id"
+    t.index ["participant_type", "participant_id"], name: "index_conversations_subscriptions_on_participant"
   end
 
   create_table "customers", force: :cascade do |t|

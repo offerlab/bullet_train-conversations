@@ -17,6 +17,7 @@ module Conversations::Base
     has_many :active_subscriptions, class_name: "Conversations::Subscription"
     has_many :memberships, through: :active_subscriptions
     has_many :users, through: :active_subscriptions
+    has_many :participants, through: :messages
 
     before_destroy do
       update(last_message: nil)
@@ -46,6 +47,14 @@ module Conversations::Base
   def create_subscriptions_for_memberships(memberships)
     memberships.each do |membership|
       subscriptions.find_or_create_by(membership: membership)
+    rescue ActiveRecord::RecordNotUnique
+      retry
+    end
+  end
+
+  def create_subscriptions_for_participants(participants)
+    participants.each do |participant|
+      subscriptions.find_or_create_by(participant: participant)
     rescue ActiveRecord::RecordNotUnique
       retry
     end
