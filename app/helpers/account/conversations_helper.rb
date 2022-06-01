@@ -50,6 +50,8 @@ module Account::ConversationsHelper
       return namespace_candidate.underscore.to_sym if namespace_candidate == BulletTrain::Conversations.participant_namespace
     end
 
+    return BulletTrain::Conversations.participant_namespace.underscore.to_sym if controller.class.name.include?('Participants::Conversations')
+
     :account
   end
 
