@@ -5,7 +5,7 @@
 <% @conversations_subscriptions.each do |subscription| %>
 
 <h1><%= t('.body.heading', subject_label: subscription.subject) %></h1>
-<%= raw t('.body.html', participants: describe_users_for_user_on_team(subscription.conversation.users, @user, subscription.conversation.team)) %>
+<%= raw t('.body.html', participants: describe_users_for_user_on_team(subscription.conversation.users, @user, subscription.conversation.parent)) %>
 
 <% messages = subscription.unread_messages_with_context_since(@since) %>
 <% previous_messages = messages.select { |message| message.created_at < [subscription.last_read_at, @since].compact.max } %>

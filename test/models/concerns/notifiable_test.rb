@@ -1,6 +1,6 @@
 require "test_helper"
 
-class UserSupportTest < ActiveSupport::TestCase
+class NotifiableTest < ActiveSupport::TestCase
   let(:team) {
     team = FactoryBot.build :team
     team.save(validate: false) && team

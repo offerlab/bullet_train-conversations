@@ -5,6 +5,9 @@
 <% heading ||= "Start a conversation about this below!" if messages.empty? %>
 <% @message ||= conversation.messages.new unless hide_message_form %>
 <% conversation.mark_read_for_membership(current_membership) if current_membership %>
+<% if in_participant_namespace? %>
+  <% conversation.mark_read_for_participant(send(BulletTrain::Conversations.current_participant_helper_method)) %>
+<% end %>
 
 <% content_for :messages, flush: true do %>
   <div id="messages_<%= conversation.id %>" class="flex flex-col p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch relative py-6 px-8">

@@ -44,6 +44,12 @@ module Conversations::Base
     end
   end
 
+  def mark_read_for_participant(participant)
+    if subscriptions.find_by(participant: participant)&.mark_read
+      save # for broadcast, but only if the subscription read receipt was actually updated.
+    end
+  end
+
   def create_subscriptions_for_memberships(memberships)
     memberships.each do |membership|
       subscriptions.find_or_create_by(membership: membership)

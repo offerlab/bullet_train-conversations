@@ -55,6 +55,10 @@ module Account::ConversationsHelper
     :account
   end
 
+  def in_participant_namespace?
+    get_conversation_namespace == BulletTrain::Conversations.participant_namespace&.underscore&.to_sym
+  end
+
   def conversations_message_mentions
     mentions = []
 
