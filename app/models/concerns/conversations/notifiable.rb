@@ -1,5 +1,7 @@
 module Conversations::Notifiable
   extend ActiveSupport::Concern
+  include ActionDispatch::Routing::PolymorphicRoutes
+  include Rails.application.routes.url_helpers
 
   included do
     scope :with_unread_subscriptions, -> { distinct.joins(:conversations_subscriptions).merge(Conversations::Subscription.unread).reorder(nil) }
@@ -28,5 +30,13 @@ module Conversations::Notifiable
       # save
       Conversations::UserMailer.notifications(self, outstanding_conversations_subscriptions.map(&:id), since).deliver_now
     end
+  end
+
+  def conversation_subject_url(conversation)
+    if self.class.include?(Conversations::ParticipantSupport) && BulletTrain::Conversations.participant_namespace_as_symbol.present?
+      return polymorphic_url [BulletTrain::Conversations.participant_namespace_as_symbol, conversation.subject]
+    end
+
+    polymorphic_url [:account, conversation.subject]
   end
 end

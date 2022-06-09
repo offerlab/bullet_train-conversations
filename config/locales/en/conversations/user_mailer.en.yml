@@ -9,8 +9,8 @@ en:
         preview: Here's a summary of what has been said since you were last updated.
         body:
           heading: "%{subject_label}"
-          html: <p>Discussion with %{participants}</p>
+          html: Discussion with %{participants}
           new_messages:
             heading: New Messages Below
         cta:
-          label: View on Bullet Train
+          label: View on %{application_name}

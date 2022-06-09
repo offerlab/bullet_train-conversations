@@ -47,16 +47,16 @@ module Account::ConversationsHelper
 
   def get_conversation_namespace
     controller.class.name.split("::").each do |namespace_candidate|
-      return namespace_candidate.underscore.to_sym if namespace_candidate == BulletTrain::Conversations.participant_namespace
+      return BulletTrain::Conversations.participant_namespace_as_symbol if namespace_candidate == BulletTrain::Conversations.participant_namespace
     end
 
-    return BulletTrain::Conversations.participant_namespace.underscore.to_sym if controller.class.name.include?('Participants::Conversations')
+    return BulletTrain::Conversations.participant_namespace_as_symbol if controller.class.name.include?('Participants::Conversations')
 
     :account
   end
 
   def in_participant_namespace?
-    get_conversation_namespace == BulletTrain::Conversations.participant_namespace&.underscore&.to_sym
+    get_conversation_namespace == BulletTrain::Conversations.participant_namespace_as_symbol
   end
 
   def conversations_message_mentions

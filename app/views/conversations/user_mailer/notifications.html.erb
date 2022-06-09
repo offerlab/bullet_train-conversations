@@ -4,8 +4,8 @@
 
 <% @conversations_subscriptions.each do |subscription| %>
 
-<h1><%= t('.body.heading', subject_label: subscription.subject) %></h1>
-<%= raw t('.body.html', participants: describe_users_for_user_on_team(subscription.conversation.users, @user, subscription.conversation.parent)) %>
+<h1 class="font-semibold text-lg"><%= t('.body.heading', subject_label: subscription.subject) %></h1>
+<p class="mb-2"><%= raw t('.body.html', participants: describe_users_for_user_on_team(subscription.conversation.users, @user, subscription.conversation.parent)) %></p>
 
 <% messages = subscription.unread_messages_with_context_since(@since) %>
 <% previous_messages = messages.select { |message| message.created_at < [subscription.last_read_at, @since].compact.max } %>
@@ -22,13 +22,13 @@
   <tr>
     <td align="center">
       <!-- Border based button https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="">
         <tr>
           <td align="center">
             <table border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td>
-                  <a href="<%= url_for [:account, subscription.conversation.subject] %>" class="button" target="_blank"><%= t('.cta.label') %></a>
+                  <a href="<%= @user.conversation_subject_url(subscription.conversation) %>" class="button" target="_blank"><%= t('.cta.label', application_name: t('application.name')) %></a>
                 </td>
                 <% if subscription.inbound_email_url.present? %>
                 <td width="20">
@@ -45,27 +45,5 @@
     </td>
   </tr>
 </table>
-
-<% unless subscription == @conversations_subscriptions.last %>
-
-        </td>
-      </tr>
-    </table>
-  </td>
-</tr>
-
-<tr>
-  <td class="email-masthead">
-  </td>
-</tr>
-
-<tr>
-  <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
-    <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0">
-      <!-- Body content -->
-      <tr>
-        <td class="content-cell">
-
-<% end %>
 
 <% end %>
