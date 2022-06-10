@@ -43,5 +43,9 @@ module BulletTrain
       return "#{participant_namespace}::ApplicationController" if participant_namespace.present?
       "ActionController::Base"
     end
+
+    def self.participant_namespace_as_symbol
+      participant_namespace&.underscore&.to_sym
+    end
   end
 end

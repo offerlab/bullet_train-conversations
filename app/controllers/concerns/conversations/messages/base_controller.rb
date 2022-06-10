@@ -31,13 +31,13 @@ module Conversations::Messages::BaseController
   def create
     respond_to do |format|
       @message.send(author, send(author_helper))
+      @style = params[:conversations_message][:style] || :conversation
       if @message.save
-        @style = params[:conversations_message][:style] || :conversation
         format.turbo_stream { render('account/conversations/messages/create') }
         format.html { redirect_back(fallback_location: [:account, @conversation, :conversations_messages]) }
         format.json { render :show, status: :created, location: [:account, @conversation, @message] }
       else
-        format.html { render :new }
+        format.html { redirect_back(fallback_location: [:account, @conversation, :conversations_messages]) }
         format.json { render json: @message.errors, status: :unprocessable_entity }
       end
     end

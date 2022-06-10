@@ -4,15 +4,16 @@ module Conversations::Subscriptions::Base
   included do
     include HasUuid
 
-    belongs_to :membership
+    belongs_to :membership, optional: true
+    belongs_to :participant, polymorphic: true, optional: true
     belongs_to :conversation
 
     has_many :messages, through: :conversation
 
     has_one :user, through: :membership
 
-    scope :latest, -> { joins(:conversation).select("conversations_subscriptions.*, conversations.last_message_at").order("conversations.last_message_at DESC") }
-    scope :unread, -> { latest.joins(:conversation).where("conversations.last_message_at IS NOT NULL AND (conversations_subscriptions.last_read_at IS NULL OR conversations_subscriptions.last_read_at < conversations.last_message_at)") }
+    scope :latest, -> { joins(:conversation).order("conversations.last_message_at DESC") }
+    scope :unread, -> { latest.where("conversations.last_message_at IS NOT NULL AND (conversations_subscriptions.last_read_at IS NULL OR conversations_subscriptions.last_read_at < conversations.last_message_at)") }
     scope :unread_since, lambda { |timestamp| unread.where("conversations.last_message_at > ?", timestamp) }
     scope :active, -> { joins(:messages).where.not(conversations_messages: {id: nil}) }
     scope :in_sort_order, -> { includes(:messages).order("conversations_messages.created_at desc") }
@@ -64,6 +65,7 @@ module Conversations::Subscriptions::Base
 
   def unread_messages_with_context_since(timestamp)
     messages = unread_messages_since(timestamp)
+    return [] if messages.blank?
     [conversation.message_before(messages.first), *messages].compact
   end
 

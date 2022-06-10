@@ -1,0 +1,49 @@
+<% content_for :preheader do %>
+<%= t('.preview') %>
+<% end %>
+
+<% @conversations_subscriptions.each do |subscription| %>
+
+<h1 class="font-semibold text-lg"><%= t('.body.heading', subject_label: subscription.subject) %></h1>
+<p class="mb-2"><%= raw t('.body.html', participants: describe_users_for_user_on_team(subscription.conversation.users, @user, subscription.conversation.parent)) %></p>
+
+<% messages = subscription.unread_messages_with_context_since(@since) %>
+<% previous_messages = messages.select { |message| message.created_at < [subscription.last_read_at, @since].compact.max } %>
+<% messages = messages - previous_messages %>
+<% if previous_messages.any? %>
+  <div class="mb-2">
+    <%= render 'account/conversations/messages/index', conversation: subscription.conversation, messages: previous_messages, current_user: @user, hide_message_form: true , heading: nil%>
+  </div>
+<% end %>
+<%= render 'account/conversations/messages/index', conversation: subscription.conversation, messages: messages, current_user: @user, hide_message_form: true, heading: (previous_messages.any? ? t('.body.new_messages.heading') : nil) %>
+
+<!-- Action -->
+<table class="body-action less-footer" align="center" width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center">
+      <!-- Border based button https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="">
+        <tr>
+          <td align="center">
+            <table border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td>
+                  <a href="<%= @user.conversation_subject_url(subscription.conversation) %>" class="button" target="_blank"><%= t('.cta.label', application_name: t('application.name')) %></a>
+                </td>
+                <% if subscription.inbound_email_url.present? %>
+                <td width="20">
+                </td>
+                <td>
+                  <a href="<%= subscription.inbound_email_url %>" class="button--link" target="_blank">Reply by Email</a>
+                </td>
+                <% end %>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<% end %>

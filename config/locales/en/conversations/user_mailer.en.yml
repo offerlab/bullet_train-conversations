@@ -1,0 +1,16 @@
+en:
+  conversations:
+    user_mailer:
+      notifications:
+        subjects:
+          application: Conversation updates
+          team: Conversation updates from %{team_name}
+          subject: "%{subject_label}"
+        preview: Here's a summary of what has been said since you were last updated.
+        body:
+          heading: "%{subject_label}"
+          html: Discussion with %{participants}
+          new_messages:
+            heading: New Messages Below
+        cta:
+          label: View on %{application_name}

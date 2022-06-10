@@ -73,8 +73,8 @@ module Conversations::Messages::Base
   end
 
   def create_subscriptions_to_conversation
-    return unless membership.present?
-    conversation.create_subscriptions_for_memberships([membership])
+    conversation.create_subscriptions_for_participants([participant]) if participant.present?
+    conversation.create_subscriptions_for_memberships([membership]) if membership.present?
     conversation.create_subscriptions_for_memberships(mentioned_memberships)
     mentioned_teams.each do |mentioned_team|
       conversation.create_subscriptions_for_memberships(mentioned_team.memberships)

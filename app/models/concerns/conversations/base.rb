@@ -17,6 +17,7 @@ module Conversations::Base
     has_many :active_subscriptions, class_name: "Conversations::Subscription"
     has_many :memberships, through: :active_subscriptions
     has_many :users, through: :active_subscriptions
+    has_many :participants, through: :messages
 
     before_destroy do
       update(last_message: nil)
@@ -30,6 +31,10 @@ module Conversations::Base
     delegate :class, :id, to: :subject, prefix: true
   end
 
+  def parent
+    send(BulletTrain::Conversations.parent_association)
+  end
+
   def bullet_train_subjects
   end
 
@@ -39,9 +44,23 @@ module Conversations::Base
     end
   end
 
+  def mark_read_for_participant(participant)
+    if subscriptions.find_by(participant: participant)&.mark_read
+      save # for broadcast, but only if the subscription read receipt was actually updated.
+    end
+  end
+
   def create_subscriptions_for_memberships(memberships)
     memberships.each do |membership|
       subscriptions.find_or_create_by(membership: membership)
+    rescue ActiveRecord::RecordNotUnique
+      retry
+    end
+  end
+
+  def create_subscriptions_for_participants(participants)
+    participants.each do |participant|
+      subscriptions.find_or_create_by(participant: participant)
     rescue ActiveRecord::RecordNotUnique
       retry
     end
