@@ -27,7 +27,7 @@ module Conversations::Notifiable
     outstanding_conversations_subscriptions = conversations_subscriptions.unread_since(since)
     if outstanding_conversations_subscriptions.any?
       self.last_notification_email_sent_at = Time.zone.now
-      # save
+      save
       Conversations::UserMailer.notifications(self, outstanding_conversations_subscriptions.map(&:id), since).deliver_now
     end
   end
