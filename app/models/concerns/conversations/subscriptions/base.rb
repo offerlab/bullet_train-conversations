@@ -8,7 +8,7 @@ module Conversations::Subscriptions::Base
     belongs_to :participant, polymorphic: true, optional: true
     belongs_to :conversation
 
-    has_many :messages, through: :conversation
+    has_many :messages, through: :conversation, inverse_of: :conversation
 
     has_one :user, through: :membership
 
