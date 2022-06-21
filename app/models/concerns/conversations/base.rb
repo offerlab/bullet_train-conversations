@@ -17,7 +17,6 @@ module Conversations::Base
     has_many :active_subscriptions, class_name: "Conversations::Subscription"
     has_many :memberships, through: :active_subscriptions
     has_many :users, through: :active_subscriptions
-    has_many :participants, through: :messages
 
     before_destroy do
       update(last_message: nil)
@@ -29,6 +28,10 @@ module Conversations::Base
 
     accepts_nested_attributes_for :messages
     delegate :class, :id, to: :subject, prefix: true
+  end
+
+  def participants
+    active_subscriptions.where.not(participant_id: nil).map(&:participant)
   end
 
   def parent

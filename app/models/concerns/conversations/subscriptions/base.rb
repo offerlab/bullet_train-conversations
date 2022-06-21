@@ -8,7 +8,7 @@ module Conversations::Subscriptions::Base
     belongs_to :participant, polymorphic: true, optional: true
     belongs_to :conversation
 
-    has_many :messages, through: :conversation
+    has_many :messages, through: :conversation, inverse_of: :conversation
 
     has_one :user, through: :membership
 
@@ -81,9 +81,9 @@ module Conversations::Subscriptions::Base
 
   def add_message(body)
     conversation.messages.create({
-      user: user,
-      membership: user.memberships.find_by(team: conversation.team),
-      body: body.lines.map { |line| line.present? ? "<p>#{line}</p>" : line }.join,
+      participant: participant,
+      membership: membership,
+      body: "<div>" + body.lines.map.select(&:present?).join("<br>") + "</div>"
     })
   end
 end

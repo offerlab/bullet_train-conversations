@@ -19,6 +19,7 @@ class MessageTest < ActiveSupport::TestCase
         Conversations::Message.create(membership: membership, conversation: conversation, body: "<div>Hello</div>")
         assert_equal conversation.subscriptions.count, 1
         assert_equal conversation.subscriptions.first.membership, membership
+        assert_nil conversation.subscriptions.first.participant
       end
 
       it "Does not create a subscription by the message author if one exists" do
@@ -37,6 +38,7 @@ class MessageTest < ActiveSupport::TestCase
         Conversations::Message.create(participant: participant, conversation: conversation, body: "<div>Hello</div>")
         assert_equal conversation.subscriptions.count, 1
         assert_equal conversation.subscriptions.first.participant, participant
+        assert_nil conversation.subscriptions.first.membership
       end
 
       it "Does not create a subscription by the message author if one exists" do
