@@ -81,9 +81,9 @@ module Conversations::Subscriptions::Base
 
   def add_message(body)
     conversation.messages.create({
-      user: user,
-      membership: user.memberships.find_by(team: conversation.team),
-      body: body.lines.map { |line| line.present? ? "<p>#{line}</p>" : line }.join,
+      participant: participant,
+      membership: membership,
+      body: "<div>" + body.lines.map.select(&:present?).join("<br>") + "</div>"
     })
   end
 end

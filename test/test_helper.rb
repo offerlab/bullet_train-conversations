@@ -2,6 +2,7 @@
 
 ENV["RAILS_ENV"] ||= "test"
 ENV["HIDE_THINGS"] = "1"
+ENV["INBOUND_EMAIL_DOMAIN"] = "example.com"
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
