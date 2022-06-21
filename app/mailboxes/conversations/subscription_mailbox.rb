@@ -3,7 +3,6 @@ class Conversations::SubscriptionMailbox < ActionMailbox::Base
 
   # the values being pulled out here are the uuid of the conversation subscription
   # and the timestamp when the original notification email being replied to was sent.
-  # ADDRESS_REGEX = /^conversations\+([0-9a-f]{32})\+(\d+)@/i
   ADDRESS_REGEX = /^conversations\+([0-9a-f]{32})\+(\d+)@/i
 
   def outbound_email_generated_at
