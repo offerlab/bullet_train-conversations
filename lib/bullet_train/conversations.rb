@@ -41,7 +41,7 @@ module BulletTrain
     def self.participant_parent_controller
       return class_variable_get("@@participant_parent_controller") if class_variable_get("@@participant_parent_controller").present?
       return "#{participant_namespace}::ApplicationController" if participant_namespace.present?
-      "ActionController::Base"
+      "Account::ApplicationController"
     end
 
     def self.participant_namespace_as_symbol
