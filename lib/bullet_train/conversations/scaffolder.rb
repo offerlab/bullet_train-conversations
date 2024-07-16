@@ -4,14 +4,13 @@ module BulletTrain
       def run
         unless argv.count >= 2
           puts ""
-          puts "🚅  usage: bin/super-scaffold conversation <Model> <ParentModels> [association_name]"
+          puts "🚅  usage: rails g super_scaffold:conversations <Model> <ParentModels> [association_name]"
           puts ""
           puts "E.g. add a conversation thread to a project milestone:"
-          puts "  bin/super-scaffold conversation Milestone Project,Team"
+          puts "  rails g super_scaffold:conversations Milestone Project,Team"
           puts ""
           puts "(You can specify a name for the association if you want to refer to the conversation by something other than `conversation`.)"
           puts ""
-          standard_protip
           puts ""
           exit
         end
