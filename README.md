@@ -25,14 +25,14 @@ $ rails restart
 For this example, we'll start by creating a project model:
 
 ```bash
-$ rails g model Project team:references name:string
-$ bin/super-scaffold crud Project Team name:text_field
+$ rails g super_scaffold Project Team name:text_field
+$ rake db:migrate
 ```
 
 Once that is in place, we can add a conversation thread to the project like so:
 
 ```bash
-$ bin/super-scaffold conversations Project Team
+$ rails g super_scaffold:conversations Project Team
 $ rake db:migrate
 ```
 
