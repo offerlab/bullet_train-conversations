@@ -23,7 +23,7 @@ module BulletTrain
     end
 
     def self.parent_class_specified?
-      parent_class != "Team"
+      parent_class.present? && parent_class != "Team"
     end
 
     def self.participant_parent_association
