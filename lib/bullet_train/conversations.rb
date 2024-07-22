@@ -15,11 +15,11 @@ module BulletTrain
     mattr_accessor :participant_avatar_partial
 
     def self.parent_association
-      parent_class.underscore.to_sym
+      parent_class.present? ? parent_class.underscore.to_sym : nil
     end
 
     def self.parent_resource
-      parent_class.underscore.pluralize.to_sym
+      parent_class.present? ? parent_class.underscore.pluralize.to_sym : nil
     end
 
     def self.parent_class_specified?
