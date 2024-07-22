@@ -29,7 +29,9 @@ module Conversations::Messages::Base
 
     after_save :create_subscriptions_to_conversation, :mark_subscription_as_read
 
-    has_one BulletTrain::Conversations.parent_association, through: :conversation
+    if BulletTrain::Conversations.parent_association.present?
+      has_one BulletTrain::Conversations.parent_association, through: :conversation
+    end
 
     if BulletTrain::Conversations.parent_class_specified?
       # TODO I don't know whether this is the right thing to do here, but the goal here is to provide support for
@@ -55,7 +57,7 @@ module Conversations::Messages::Base
   end
 
   def parent
-    send(BulletTrain::Conversations.parent_association)
+    BulletTrain::Conversations.parent_association.present? ? send(BulletTrain::Conversations.parent_association) : nil
   end
 
   def mentioned_memberships

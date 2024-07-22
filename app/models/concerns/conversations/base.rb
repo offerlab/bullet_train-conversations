@@ -2,7 +2,9 @@ module Conversations::Base
   extend ActiveSupport::Concern
 
   included do
-    belongs_to BulletTrain::Conversations.parent_association, class_name: BulletTrain::Conversations.parent_class
+    if BulletTrain::Conversations.parent_association.present?
+      belongs_to BulletTrain::Conversations.parent_association, class_name: BulletTrain::Conversations.parent_class
+    end
 
     if BulletTrain::Conversations.parent_class_specified?
       has_one :team, through: BulletTrain::Conversations.parent_association
