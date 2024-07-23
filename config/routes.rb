@@ -1,20 +1,30 @@
 extending = {only: []}
 
 Rails.application.routes.draw do
-  namespace :account do
-    shallow do
-      # e.g. `resources :teams, extending do`
-      resources BulletTrain::Conversations.parent_resource, extending do
-        resources :conversations, only: [:show, :create, :update] do
-          namespace :conversations do
-            resources :messages do
-              member do
-                get :reply
-                get :thread
-              end
-            end
+
+  # This is a reuseable set of routes that we can optionally nest under a parent_resource
+  # or not, depending on the configuration of the app using this gem.
+  concern :conversationable do
+    resources :conversations, only: [:show, :create, :update] do
+      namespace :conversations do
+        resources :messages do
+          member do
+            get :reply
+            get :thread
           end
         end
+      end
+    end
+  end
+  namespace :account do
+    shallow do
+      if BulletTrain::Conversations.parent_resource.present?
+        # e.g. `resources :teams, extending do`
+        resources BulletTrain::Conversations.parent_resource, extending do
+          concerns :conversationable
+        end
+      else
+        concerns :conversationable
       end
 
       resources :users, extending do

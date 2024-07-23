@@ -18,7 +18,7 @@ module Conversations::BaseController
           subject = conversation_params[:subject_class].constantize.find(conversation_params[:subject_id])
 
           @conversation = subject.create_conversation_on_team
-          @parent = @conversation.send(BulletTrain::Conversations.parent_association)
+          @parent = BulletTrain::Conversations.parent_association.present? ? @conversation.send(BulletTrain::Conversations.parent_association) : nil
 
           @style = conversation_params[:style] || :conversation
           @conversation.update!(conversation_params.slice(:messages_attributes))
