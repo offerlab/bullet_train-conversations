@@ -39,7 +39,7 @@
       <% if hide_message_form %>
         <%= content_for :messages %>
       <% else %>
-        <%= updates_for @message.broadcast_key do %>
+        <%= cable_ready_updates_for @message.broadcast_key do %>
           <%= content_for :messages %>
         <% end %>
       <% end %>

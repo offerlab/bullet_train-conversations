@@ -1,4 +1,4 @@
-<%= updates_for current_membership, :conversations_subscriptions do %>
+<%= cable_ready_updates_for current_membership, :conversations_subscriptions do %>
   <%= render 'account/shared/menu/item', {
     url: main_app.polymorphic_path([:account, current_user, :conversations, :subscriptions]),
     label: t('conversations/subscriptions.navigation.label'),

@@ -11,7 +11,7 @@ module Conversations::Base
     end
 
     # messages.
-    has_many :messages, class_name: "Conversations::Message", dependent: :destroy, enable_updates: true, inverse_of: :conversation
+    has_many :messages, class_name: "Conversations::Message", dependent: :destroy, enable_cable_ready_updates: true, inverse_of: :conversation
     belongs_to :last_message, class_name: "Conversations::Message", optional: true
 
     # user subscriptions.
