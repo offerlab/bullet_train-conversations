@@ -16,7 +16,7 @@
           </div>
         <% end %>
       </div>
-      <%= updates_for @message.broadcast_key do  %>
+      <%= cable_ready_updates_for @message.broadcast_key do  %>
         <div id="messages_<%= conversation.id %>" class="flex flex-col p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch relative">
           <%= turbo_frame_tag "messages" do %>
             <div>

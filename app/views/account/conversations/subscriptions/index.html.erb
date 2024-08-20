@@ -23,7 +23,7 @@
 
           </button>
         </div>
-        <%= updates_for current_membership, :conversations_subscriptions do %>
+        <%= cable_ready_updates_for current_membership, :conversations_subscriptions do %>
           <% if @subscriptions.any? %>
             <% @subscriptions.in_sort_order.each do |subscription| %>
               <%= render 'shared/conversation_card', subscription: subscription, current_conversation: @conversation&.id == subscription.conversation.id %>
