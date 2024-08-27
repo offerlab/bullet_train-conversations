@@ -1,21 +1,46 @@
 <div class=" h-full overflow-hidden flex flex-col relative border rounded-lg bg-white"
   data-controller="slideover"
-  data-slideover-entering-classes="duration-300 ease-in,duration-300"
-  data-slideover-leaving-classes="duration-300 ease-out,duration-300"
-  data-slideover-visible-classes=",opacity-75"
-  data-slideover-invisible-classes="-translate-x-full,opacity-0"
   data-slideover-open-value="false"
   >
+  <style>
+    dialog.slideover[open] {
+      animation: slide-in-from-left 300ms forwards ease-in-out;
+    }
+
+    dialog.slideover[closing] {
+      pointer-events: none;
+      animation: slide-out-to-left 300ms forwards ease-in-out;
+    }
+
+    @keyframes slide-in-from-left{
+      from {
+        transform: translateX(-100%);
+      }
+    }
+
+    @keyframes slide-out-to-left{
+      to {
+        transform: translateX(-100%);
+      }
+    }
+  </style>
   <%= turbo_frame_tag "subscriptions_#{current_membership.id}", target: '_top' do %>
     <div class="flex relative">
-      <div class="w-3/4 md:w-2/5 bg-white md:overflow-y-scroll h-full overflow-y-scroll md:h-screen md:relative absolute md:inline z-20 border md:border-none transform -translate-x-full md:transform-none"
-        data-slideover-target="menu"
-        data-slideover-open-classes="test and test"
+
+      <%
+        # The dialog element is used for the slideover on small screen
+        # Since the dialog element isn't part of the normal flow of the document we can't really re-use it for the
+        # persistent inbox on larger screens, so we have a div below that contains the same content.
+      %>
+      <dialog
+        class="slideover h-full max-h-full m-0 w-3/4 md:w-2/5 bg-white md:overflow-y-scroll overflow-y-scroll md:h-screen"
+        data-slideover-target="dialog"
+        data-action="click->slideover#backdropClose"
         >
         <div class="md:hidden items-end flex rounded-tl-lg">
           <div class="bg-gray-50 w-full flex-grow"></div>
           <button class="m-2 mr-4"
-            data-action="slideover#toggle"
+            data-action="slideover#close"
             >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 stroke-current text-gray-300 hover:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -23,28 +48,21 @@
 
           </button>
         </div>
-        <%= cable_ready_updates_for current_membership, :conversations_subscriptions do %>
-          <% if @subscriptions.any? %>
-            <% @subscriptions.in_sort_order.each do |subscription| %>
-              <%= render 'shared/conversation_card', subscription: subscription, current_conversation: @conversation&.id == subscription.conversation.id %>
-            <% end %>
-          <% else %>
-            <div class="p-4 md:mt-8 text-gray-500 bg-white m-4 rounded text-center border-dashed border-2 text-lg">
-              <%= t("account.conversations.subscriptions.notifications.empty_state").html_safe %>
-            </div>
-          <% end %>
-        <% end %>
+        <%= render "inbox" %>
+      </dialog>
+
+      <% # This is the persistent inbox for larger screens %>
+      <div class="w-3/4 md:w-2/5 bg-white md:overflow-y-scroll h-full overflow-y-scroll md:h-screen md:relative absolute hidden md:inline z-20 border md:border-none">
+        <%= render "inbox" %>
       </div>
 
       <!-- Right hand pane -->
       <div class="md:w-3/5  md:border-l-2 rounded-none z-10 w-full md:h-screen md:overflow-y-scroll">
 
-        <!-- slideover overlay -->
-        <div class="bg-gray-600 opacity-0 inset-0 absolute z-20 transform hidden md:hidden" data-slideover-target="overlay" data-action="click->slideover#toggle"></div>
         <div class="px-4 py-2 md:hidden">
         <!-- Back button for small screens to go back to the conversation list -->
         <% if @subscriptions.any? %>
-          <button data-slideover-target="button" data-action="slideover#toggle">
+          <button data-action="slideover#open">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
             </svg>
@@ -82,4 +100,3 @@
     </div>
   <% end %>
 </div>
-
