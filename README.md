@@ -20,6 +20,20 @@ $ rake db:migrate
 $ rails restart
 ```
 
+Then install `tailwindcss-stimulus-components`
+
+```bash
+yarn add tailwindcss-stimulus-components
+```
+
+And add this to the bottom of `app/javascripts/controllers/index.js`
+
+```javascript
+// Slideover is used by the conversations gem for the inbox on small screens
+import { Slideover } from "tailwindcss-stimulus-components"
+application.register('slideover', Slideover)
+```
+
 ## Example Usage
 
 For this example, we'll start by creating a project model:

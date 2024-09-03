@@ -1,0 +1,11 @@
+<%= cable_ready_updates_for current_membership, :conversations_subscriptions do %>
+  <% if @subscriptions.any? %>
+    <% @subscriptions.in_sort_order.each do |subscription| %>
+      <%= render 'shared/conversation_card', subscription: subscription, current_conversation: @conversation&.id == subscription.conversation.id %>
+    <% end %>
+  <% else %>
+    <div class="p-4 md:mt-8 text-gray-500 bg-white m-4 rounded text-center border-dashed border-2 text-lg">
+      <%= t("account.conversations.subscriptions.notifications.empty_state").html_safe %>
+    </div>
+  <% end %>
+<% end %>
