@@ -2,7 +2,7 @@
 <% mentions = conversations_message_mentions %>
 <%= form.hidden_field :parent_message_id, value: nil, data: { "reply-target": "parentMessage" } %>
 <div class="chat-input relative <%= 'pb-6' if mentions.none? %>">
-  <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {"reply-target": "input", mentions: mentions}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none", id: "conversations_message_#{message.id}_#{message.parent_message_id}"}, other_options: {hide_label: true, help: mentions.any? ? t('.mentions_help'): nil} do |p| %>
+  <%= render 'shared/fields/trix_editor', form: form, method: :body, options: {placeholder: 'Type your message here ...', style: 'min-height: inherit;', autofocus: true, data: {"reply-target": "input", mentions: mentions}, class: "pt-5 pb-5 pl-5 pr-20 rounded-lg z-0 focus:shadow focus:outline-none", id: "conversations_message_#{message.id}_#{message.parent_message_id}_#{message.broadcast_key}"}, other_options: {hide_label: true, help: mentions.any? ? t('.mentions_help'): nil} do |p| %>
     <% p.content_for :submit_button do %>
       <button type="submit" class="h-10 w-10 absolute inline-flex items-center justify-center rounded-full transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none bottom-2 right-2">
         <i class="ti ti-arrow-up"></i>

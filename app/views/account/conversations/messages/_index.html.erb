@@ -3,7 +3,7 @@
 <% messages ||= conversation.messages.oldest %>
 <% heading ||= nil %>
 <% heading ||= "Start a conversation about this below!" if messages.empty? %>
-<% @message ||= conversation.messages.new unless hide_message_form %>
+<% new_message ||= @message || conversation.messages.new unless hide_message_form %>
 <% conversation.mark_read_for_membership(current_membership) if current_membership %>
 <% if in_participant_namespace? %>
   <% conversation.mark_read_for_participant(send(BulletTrain::Conversations.current_participant_helper_method)) %>
@@ -39,7 +39,7 @@
       <% if hide_message_form %>
         <%= content_for :messages %>
       <% else %>
-        <%= cable_ready_updates_for @message.broadcast_key do %>
+        <%= cable_ready_updates_for new_message.broadcast_key do %>
           <%= content_for :messages %>
         <% end %>
       <% end %>
@@ -47,7 +47,7 @@
       <% unless hide_message_form %>
         <div class="border-t-2 border-gray-200 mb-2 pt-4 pb-6 px-8 sm:mb-0">
           <div class="chat-controls">
-            <%= render 'account/conversations/messages/form', conversation: conversation, message: @message %>
+            <%= render 'account/conversations/messages/form', conversation: conversation, message: new_message %>
           </div>
         </div>
       <% end %>
