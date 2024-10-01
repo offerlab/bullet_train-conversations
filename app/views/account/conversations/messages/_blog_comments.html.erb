@@ -2,7 +2,7 @@
 <% messages ||= conversation.messages.without_replies.newest %>
 <% heading ||= nil %>
 <% heading ||= "Start a conversation about this below!" if messages.empty? %>
-<% @message ||= conversation.messages.new unless hide_message_form %>
+<% new_message ||= @message || conversation.messages.new unless hide_message_form %>
 <% conversation.mark_read_for_membership(current_membership) %>
 
 <%= render 'account/shared/box' do |p| %>
@@ -12,11 +12,11 @@
       <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
         <% unless hide_message_form %>
           <div class="chat-controls">
-            <%= render 'account/conversations/messages/form', conversation: conversation, message: @message, style: :blog %>
+            <%= render 'account/conversations/messages/form', conversation: conversation, message: new_message, style: :blog %>
           </div>
         <% end %>
       </div>
-      <%= cable_ready_updates_for @message.broadcast_key do  %>
+      <%= cable_ready_updates_for new_message.broadcast_key do  %>
         <div id="messages_<%= conversation.id %>" class="flex flex-col p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch relative">
           <%= turbo_frame_tag "messages" do %>
             <div>

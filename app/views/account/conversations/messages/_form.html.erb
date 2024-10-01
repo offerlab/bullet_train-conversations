@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "message_form" do %>
+<%= turbo_frame_tag "message_form_#{message.broadcast_key}" do %>
   <% style ||= :conversation %>
   <% conversation_namespace = get_conversation_namespace %>
   <% new_conversation_model = BulletTrain::Conversations.parent_association.present? ?
