@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-conversations (1.1.3)
+    bullet_train-conversations (1.1.4)
       bullet_train-super_scaffolding (~> 1.0)
       extended_email_reply_parser (~> 0.5)
       rails (>= 6.0)
@@ -140,7 +140,7 @@ GEM
     bullet_train-super_load_and_authorize_resource (1.7.17)
       cancancan
       rails (>= 6.0.0)
-    bullet_train-super_scaffolding (1.7.21)
+    bullet_train-super_scaffolding (1.7.22)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
