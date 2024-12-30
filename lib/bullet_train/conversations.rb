@@ -2,6 +2,8 @@ require "bullet_train/conversations/version"
 require "bullet_train/conversations/engine"
 require "bullet_train/conversations/scaffolder"
 
+require "extended_email_reply_parser"
+
 module BulletTrain
   module Conversations
     # NOTE We specifically don't try to support namespaced replacements for `Team`.
