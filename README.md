@@ -2,7 +2,15 @@
 
 ## Installation
 
-Add the following to your `Gemfile`:
+This gem requires `icu4c` to be installed.
+
+If you're in a regulat BulletTrain project you can run this to check for `icu4c`.
+
+```
+./bin/setup-scripts/check_icu.rb
+```
+
+Then add the following to your `Gemfile`:
 
 ```ruby
 source "https://YOUR_LICENSE_KEY@gem.fury.io/bullettrain" do
