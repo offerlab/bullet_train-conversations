@@ -3,6 +3,12 @@ module Conversations::Messages::BaseController
 
   included do
     account_load_and_authorize_resource :message, through: :conversation, through_association: :messages, member_actions: [:reply, :thread]
+
+    def load_team
+      # Override BT's `load_team` to avoid setting current_team on the logged in user
+      # in our case, conversations are happening between two distinct teams, so setting the user's current_team
+      # based on the conversation's team breaks things
+    end
   end
 
   # GET /account/conversations/:conversation_id/conversations/messages
